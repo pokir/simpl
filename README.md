@@ -1,4 +1,4 @@
-# Mini language
+# simpl
 
 A small programming language
 
