@@ -4,11 +4,11 @@ A small programming language
 
 ## Goals
 
-- [] Turing complete
-- [] Inferred types
-- [] Nestable statements
-- [] Flexible spacing
-- [] Standard library
+- [ ] Turing complete
+- [ ] Inferred types
+- [ ] Nestable statements
+- [ ] Flexible spacing
+- [ ] Standard library
 
 ## Syntax
 
