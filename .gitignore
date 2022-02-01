@@ -3,3 +3,9 @@
 *.swo
 
 /target
+
+# For python
+venv
+__pycache__
+
+

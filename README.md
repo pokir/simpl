@@ -9,6 +9,9 @@ A small programming language
 - [ ] Nestable statements
 - [ ] Flexible spacing
 - [ ] Standard library
+- [ ] Errors
+  - [ ] Syntax errors
+  - [ ] Run time errors
 
 ## Syntax
 
