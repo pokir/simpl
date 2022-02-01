@@ -123,7 +123,10 @@ factorial!    # put a ! at the end of the name
 
 - Input/output
 ```
-# ??????
+# ???????
+
+# For now:
+print!
 ```
 
 Ideas:
