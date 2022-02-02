@@ -110,13 +110,10 @@ class Lexer:
                     self.position += 1
 
             elif self.char() in ['\'', '"']:
-                quote = self.char()
-
+                buffer = self.char()
                 self.position += 1
 
-                buffer = ''
-
-                while self.char() != quote:
+                while self.char() != buffer[0]:
                     if self.char() == '\\':
                         self.position += 1
                         
@@ -136,7 +133,9 @@ class Lexer:
 
                     self.position += 1
 
+                buffer += self.char()
                 self.position += 1
+
                 self.tokens.append(Token(TokenKind.STRING, buffer))
 
             elif self.char().isnumeric():

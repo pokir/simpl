@@ -42,3 +42,17 @@ class TokenKind(Enum):
 
     CALL = auto()
     RETURN = auto()
+
+
+class TreeNodeKind(Enum):
+    PROGRAM = auto()
+    
+    POP = auto()
+    PUSH = auto()
+
+    FUNCTION_DECLARATION = auto()
+    CALL_EXPRESSION = auto()
+
+    IF = auto()
+
+    BLOCK_STATEMENT = auto()

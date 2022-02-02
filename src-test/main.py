@@ -3,6 +3,7 @@ import sys
 
 from enums import *
 from lexer import Lexer
+from parser import Parser
 from token import Token
 
 
@@ -16,6 +17,11 @@ def main():
     lexer.lex()
 
     print(list(map(lambda token: (token.kind, token.literal), lexer.tokens)))
+
+    parser = Parser(lexer.tokens)
+    parser.parse()
+
+    print(parser.tree)
 
 
 if __name__ == '__main__':
