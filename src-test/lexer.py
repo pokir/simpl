@@ -93,6 +93,14 @@ class Lexer:
                 self.tokens.append(Token(TokenKind.LOOP, '&'))
                 self.position += 1
 
+            elif self.char() == '{':
+                self.tokens.append(Token(TokenKind.LEFT_CURLY_BRACE, '{'))
+                self.position += 1
+
+            elif self.char() == '}':
+                self.tokens.append(Token(TokenKind.RIGHT_CURLY_BRACE, '}'))
+                self.position += 1
+
             elif self.char() == '>':
                 if self.next_char() == '=':
                     self.tokens.append(Token(TokenKind.GREATER_OR_EQUALS, '!='))

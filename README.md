@@ -1,5 +1,8 @@
 # simpl
 
+## Notes
+https://astexplorer.net/
+
 A small programming language
 
 ## Goals
