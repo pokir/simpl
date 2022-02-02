@@ -21,8 +21,6 @@ def main():
     parser = Parser(lexer.tokens)
     parser.parse()
 
-    print(parser.tree)
-
 
 if __name__ == '__main__':
     main()
