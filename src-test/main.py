@@ -1,10 +1,12 @@
 from enum import Enum, auto
 import sys
 
-from enums import *
-from lexer import Lexer
-from parser import Parser
-from token import Token
+from lexer import lexer
+from parser import parser
+
+
+Lexer = lexer.Lexer
+Parser = parser.Parser
 
 
 def main():
@@ -13,13 +15,14 @@ def main():
     with open(filename, 'r') as f:
         source = f.read()
 
-    lexer = Lexer(source)
-    lexer.lex()
+    lxr = Lexer(source)
+    lxr.lex()
+    prsr = Parser(lxr.tokens)
+    prsr.parse()
 
-    print(list(map(lambda token: (token.kind, token.literal), lexer.tokens)))
-
-    parser = Parser(lexer.tokens)
-    parser.parse()
+    print(list(map(lambda token: (token.kind, token.literal), lxr.tokens)))
+    print()
+    print(prsr.tree)
 
 
 if __name__ == '__main__':

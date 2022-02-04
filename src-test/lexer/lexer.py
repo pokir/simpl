@@ -1,5 +1,11 @@
-from token import Token
-from enums import *
+#from token_ import Token
+#from token_kinds import TokenKind
+from lexer import token_
+from lexer import token_kinds_
+
+
+Token = token_.Token
+TokenKind = token_kinds_.TokenKind
 
 
 class Lexer:
@@ -117,6 +123,10 @@ class Lexer:
                     self.tokens.append(Token(TokenKind.LESS, '<'))
                     self.position += 1
 
+            elif self.char() in ['T', 'F']:
+                self.tokens.append(Token(TokenKind.BOOLEAN, self.char()))
+                self.position += 1
+
             elif self.char() in ['\'', '"']:
                 buffer = self.char()
                 self.position += 1
@@ -183,3 +193,5 @@ class Lexer:
 
             else:
                 raise SyntaxError(SyntaxErrorKind.INVALID_SYNTAX)
+
+        self.tokens.append(Token(TokenKind.END_OF_FILE, None))
