@@ -20,8 +20,8 @@ class TokenKind(Enum):
     NOT_EQUALS = auto()
     GREATER = auto()
     LESS = auto()
-    GREATER_OR_EQUALS = auto()
-    LESS_OR_EQUALS = auto()
+    GREATER_EQUALS = auto()
+    LESS_EQUALS = auto()
 
     IF = auto()
     ELSE = auto()

@@ -2,10 +2,13 @@
 #from token_kinds import TokenKind
 from lexer import token_
 from lexer import token_kinds_
+from errors import errors
 
 
 Token = token_.Token
 TokenKind = token_kinds_.TokenKind
+throw_error = errors.throw_error
+ErrorKind = errors.ErrorKind
 
 
 class Lexer:
@@ -26,6 +29,11 @@ class Lexer:
         except IndexError:
             return None
 
+    def get_line_column(self, offset=0):
+        line = self.source[:self.position + offset].count('\n') + 1
+        column = len(self.source[:self.position + offset].split('\n')[-1]) + 1
+        return (line, column)
+    
     def lex(self):
         #while self.position < len(self.source):
         while self.char() is not None:
@@ -37,97 +45,100 @@ class Lexer:
                 while self.char() != '\n':
                     self.position += 1
 
+            # TODO: remove the literal value from tokens that don't need it
+            # (like ==, ., @) since it will always be the same
             elif self.char() == '.':
-                self.tokens.append(Token(TokenKind.PUSH, '.'))
+                self.tokens.append(Token(TokenKind.PUSH, '.', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '@':
-                self.tokens.append(Token(TokenKind.POP, '@'))
+                self.tokens.append(Token(TokenKind.POP, '@', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '+':
-                self.tokens.append(Token(TokenKind.ADD, '+'))
+                self.tokens.append(Token(TokenKind.ADD, '+', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '-':
                 if self.next_char() == '>':
-                    self.tokens.append(Token(TokenKind.RETURN, '->'))
+                    self.tokens.append(Token(TokenKind.RETURN, '->', self.get_line_column(), self.get_line_column(2)))
                     self.position += 2
                 else:
-                    self.tokens.append(Token(TokenKind.SUBTRACT, '-'))
+                    self.tokens.append(Token(TokenKind.SUBTRACT, '-', self.get_line_column(), self.get_line_column(1)))
                     self.position += 1
 
             elif self.char() == '*':
-                self.tokens.append(Token(TokenKind.MULTIPLY, '*'))
+                self.tokens.append(Token(TokenKind.MULTIPLY, '*', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '/':
-                self.tokens.append(Token(TokenKind.DIVIDE, '/'))
+                self.tokens.append(Token(TokenKind.DIVIDE, '/', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '%':
-                self.tokens.append(Token(TokenKind.MODULE, '%'))
+                self.tokens.append(Token(TokenKind.MODULE, '%', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '=':
                 if self.next_char() == '=':
-                    self.tokens.append(Token(TokenKind.EQUALS, '=='))
+                    self.tokens.append(Token(TokenKind.EQUALS, '==', self.get_line_column(), self.get_line_column(2)))
                     self.position += 2
                 else:
-                    raise SyntaxError(SyntaxErrorKind.INVALID_SYNTAX)
+                    throw_error(self.source, ErrorKind.ILLEGAL_CHARACTER, self.get_line_column(), self.get_line_column(1))
 
             elif self.char() == '!':
                 if self.next_char() == '=':
-                    self.tokens.append(Token(TokenKind.NOT_EQUALS, '!='))
+                    self.tokens.append(Token(TokenKind.NOT_EQUALS, '!=', self.get_line_column(), self.get_line_column(2)))
                     self.position += 2
                 else:
-                    self.tokens.append(Token(TokenKind.CALL, '!'))
+                    self.tokens.append(Token(TokenKind.CALL, '!', self.get_line_column(), self.get_line_column(1)))
 
             elif self.char() == '^':
-                self.tokens.append(Token(TokenKind.BREAK, '^'))
+                self.tokens.append(Token(TokenKind.BREAK, '^', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '?':
-                self.tokens.append(Token(TokenKind.IF, '?'))
+                self.tokens.append(Token(TokenKind.IF, '?', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == ':':
-                self.tokens.append(Token(TokenKind.ELSE, ':'))
+                self.tokens.append(Token(TokenKind.ELSE, ':', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '&':
-                self.tokens.append(Token(TokenKind.LOOP, '&'))
+                self.tokens.append(Token(TokenKind.LOOP, '&', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '{':
-                self.tokens.append(Token(TokenKind.LEFT_CURLY_BRACE, '{'))
+                self.tokens.append(Token(TokenKind.LEFT_CURLY_BRACE, '{', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '}':
-                self.tokens.append(Token(TokenKind.RIGHT_CURLY_BRACE, '}'))
+                self.tokens.append(Token(TokenKind.RIGHT_CURLY_BRACE, '}', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '>':
                 if self.next_char() == '=':
-                    self.tokens.append(Token(TokenKind.GREATER_OR_EQUALS, '!='))
+                    self.tokens.append(Token(TokenKind.GREATER_OR_EQUALS, '!=', self.get_line_column(), self.get_line_column(2)))
                     self.position += 2
                 else:
-                    self.tokens.append(Token(TokenKind.GREATER, '>'))
+                    self.tokens.append(Token(TokenKind.GREATER, '>', self.get_line_column(), self.get_line_column(1)))
                     self.position += 1
 
             elif self.char() == '<':
                 if self.next_char() == '=':
-                    self.tokens.append(Token(TokenKind.LESS_OR_EQUALS, '!='))
+                    self.tokens.append(Token(TokenKind.LESS_OR_EQUALS, '!=', self.get_line_column(), self.get_line_column(2)))
                     self.position += 2
                 else:
-                    self.tokens.append(Token(TokenKind.LESS, '<'))
+                    self.tokens.append(Token(TokenKind.LESS, '<', self.get_line_column(), self.get_line_column(1)))
                     self.position += 1
 
             elif self.char() in ['T', 'F']:
-                self.tokens.append(Token(TokenKind.BOOLEAN, self.char()))
+                self.tokens.append(Token(TokenKind.BOOLEAN, self.char(), self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() in ['\'', '"']:
+                start = self.get_line_column()
                 buffer = self.char()
                 self.position += 1
 
@@ -143,8 +154,8 @@ class Lexer:
                         else:
                             buffer += '\\' + self.char()
 
-                    elif self.char() is None:
-                        raise SyntaxError(SyntaxErrorKind.UNTERMINATED_STRING_LITERAL)
+                    elif self.char() is None: # if it reaches end of file
+                        throw_error(self.source, ErrorKind.UNTERMINATED_STRING_LITERAL, start, self.get_line_column())
 
                     else:
                         buffer += self.char()
@@ -152,11 +163,12 @@ class Lexer:
                     self.position += 1
 
                 buffer += self.char()
+                self.tokens.append(Token(TokenKind.STRING, buffer, start, self.get_line_column(1)))
+
                 self.position += 1
 
-                self.tokens.append(Token(TokenKind.STRING, buffer))
-
             elif self.char().isnumeric():
+                start = self.get_line_column()
                 buffer = self.char()
                 self.position += 1
 
@@ -171,14 +183,15 @@ class Lexer:
                             self.position += 1
                             continue
                         else:
-                            raise SyntaxError(SyntaxErrorKind.INVALID_NUMBER_LITERAL)
+                            throw_error(self.source, ErrorKind.INVALID_NUMBER_LITERAL, start, self.get_line_column())
 
                     buffer += self.char()
                     self.position += 1
 
-                self.tokens.append(Token(TokenKind.NUMBER, buffer))
+                self.tokens.append(Token(TokenKind.NUMBER, buffer, start, self.get_line_column()))
 
             elif self.char().isalpha() or self.char() == '_':
+                start = self.get_line_column()
                 buffer = self.char()
                 self.position += 1
 
@@ -186,12 +199,9 @@ class Lexer:
                     buffer += self.char()
                     self.position += 1
 
-                #if self.char() not in [' ', '\n', '\t', '!']:
-                    #raise SyntaxError(SyntaxErrorKind.INVALID_SYNTAX)
-
-                self.tokens.append(Token(TokenKind.IDENTIFIER, buffer))
+                self.tokens.append(Token(TokenKind.IDENTIFIER, buffer, start, self.get_line_column()))
 
             else:
-                raise SyntaxError(SyntaxErrorKind.INVALID_SYNTAX)
+                throw_error(self.source, ErrorKind.ILLEGAL_CHARACTER, self.get_line_column(), self.get_line_column(1))
 
-        self.tokens.append(Token(TokenKind.END_OF_FILE, None))
+        self.tokens.append(Token(TokenKind.END_OF_FILE, None, self.get_line_column(), self.get_line_column(1)))

@@ -17,12 +17,17 @@ def main():
 
     lxr = Lexer(source)
     lxr.lex()
-    prsr = Parser(lxr.tokens)
+    print()
+    print('Lexer output:')
+    print(lxr.tokens)
+    print()
+
+    prsr = Parser(source, lxr.tokens)
     prsr.parse()
 
-    print(list(map(lambda token: (token.kind, token.literal), lxr.tokens)))
-    print()
+    print('Parser output:')
     print(prsr.tree)
+    print()
 
 
 if __name__ == '__main__':

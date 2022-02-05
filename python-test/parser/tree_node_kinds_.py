@@ -19,8 +19,6 @@ class TreeNodeKind(Enum):
     LOOP_STATEMENT = auto()
     BREAK_STATEMENT = auto()
 
-    BLOCK = auto() # {curly braces}
-
     NUMERIC_LITERAL = auto()
     STRING_LITERAL = auto()
     BOOLEAN_LITERAL = auto()
@@ -35,5 +33,5 @@ class TreeNodeKind(Enum):
     NOT_EQUALS_OPERATION = auto()
     GREATER_OPERATION = auto()
     LESS_OPERATION = auto()
-    GREATER_OR_EQUALS_OPERATION = auto()
-    LESS_OR_EQUALS_OPERATION = auto()
+    GREATER_EQUALS_OPERATION = auto()
+    LESS_EQUALS_OPERATION = auto()
