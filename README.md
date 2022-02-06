@@ -1,6 +1,9 @@
 # simpl
 
 A small programming language originally inspired by [porth](https://gitlab.com/tsoding/porth).
+
+This is just a small language to learn how compilers work.
+
 (WORK IN PROGRESS)
 
 ## Notes
