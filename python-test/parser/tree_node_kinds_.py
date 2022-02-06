@@ -17,6 +17,7 @@ class TreeNodeKind(Enum):
     ELSE_STATEMENT = auto()
 
     LOOP_STATEMENT = auto()
+    CONTINUE_STATEMENT = auto()
     BREAK_STATEMENT = auto()
 
     NUMERIC_LITERAL = auto()

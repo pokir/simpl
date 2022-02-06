@@ -105,10 +105,11 @@ class Parser:
                or self._else_statement(in_loop, in_function) \
                \
                or self._loop_statement(in_function) \
-               or (self._break_statement() if in_loop else None) \
+               or self._continue_statement(in_loop) \
+               or self._break_statement(in_loop) \
                \
                or self._function_declaration(in_loop) \
-               or (self._return_statement() if in_function else None) \
+               or self._return_statement(in_function) \
                or self._function_call()
 
     def _push_statement(self):
@@ -278,8 +279,25 @@ class Parser:
             node.end = self.relative_token(-1).end # position of the last curly brace
             return node
 
-    def _break_statement(self):
-        if self.token().kind == TokenKind.BREAK:
+    def _continue_statement(self, in_loop):
+        is_continue = self.token().kind == TokenKind.CONTINUE
+        if not in_loop:
+            if is_continue:
+                throw_error(self.source, ErrorKind.CONTINUE_OUTSIDE_LOOP_ERROR, self.token().start, self.token().end)
+            return
+        if is_continue:
+            self.position += 1
+            return TreeNode(TreeNodeKind.CONTINUE_STATEMENT,
+                            self.relative_token(-1).start,
+                            self.relative_token(-1).end)
+
+    def _break_statement(self, in_loop):
+        is_break = self.token().kind == TokenKind.BREAK
+        if not in_loop:
+            if is_break:
+                throw_error(self.source, ErrorKind.BREAK_OUTSIDE_LOOP_ERROR, self.token().start, self.token().end)
+            return
+        if is_break:
             self.position += 1
             return TreeNode(TreeNodeKind.BREAK_STATEMENT,
                             self.relative_token(-1).start,
@@ -307,8 +325,13 @@ class Parser:
             node.end = self.relative_token(-1).end # position of the last curly brace
             return node
 
-    def _return_statement(self):
-        if self.token().kind == TokenKind.RETURN:
+    def _return_statement(self, in_function):
+        is_return = self.token().kind == TokenKind.RETURN
+        if not in_function:
+            if is_return:
+                throw_error(self.source, ErrorKind.RETURN_OUTSIDE_FUNCTION_ERROR, self.token().start, self.token().end)
+            return
+        if is_return:
             self.position += 1
             return TreeNode(TreeNodeKind.RETURN_STATEMENT,
                             self.relative_token(-1).start,

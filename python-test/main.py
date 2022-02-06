@@ -4,9 +4,13 @@ import sys
 from lexer import lexer
 from parser import parser
 
+from errors import errors
+
 
 Lexer = lexer.Lexer
 Parser = parser.Parser
+# For the future when it will show all errors:
+#show_errors = errors.show_errors
 
 
 def main():
@@ -28,6 +32,9 @@ def main():
     print('Parser output:')
     print(prsr.tree)
     print()
+
+    # For the future when it will show all errors:
+    #show_errors()
 
 
 if __name__ == '__main__':

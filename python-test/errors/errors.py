@@ -4,7 +4,10 @@ from os import get_terminal_size
 import sys
 
 
-def show_error_in_code(source, start, end):
+all_errors = [] # for the future when it will show all errors
+
+
+def display_error_in_code(source, start, end):
     # Show where the error is in the code, showing 5 lines of code
     # start and end are both (line, column), starting at 1 for both
     # line and column
@@ -58,9 +61,19 @@ def show_error_in_code(source, start, end):
 
 def throw_error(source, error_kind, start, end):
     error = error_kind.value(source, start, end)
+    all_errors.append(error) # for the future when it will show all errors
     print(error.show())
     print()
     sys.exit(1)
+
+
+# For the future when it will show all errors:
+#def show_errors():
+#    if len(all_errors) > 0:
+#        for error in all_errors:
+#            print(error.show())
+#            print()
+#        sys.exit(1)
 
 
 class Error:
@@ -74,7 +87,7 @@ class Error:
         result = f'{self.__class__.__name__}: {self.details}\n'
         result += f'Line {self.start[0]}, column {self.start[1]}'
 
-        result += f'\n\n{show_error_in_code(self.source, self.start, self.end)}'
+        result += f'\n\n{display_error_in_code(self.source, self.start, self.end)}'
         return result
 
 
@@ -94,9 +107,24 @@ class UnterminatedStringLiteralError(Error):
 
 
 class InvalidNumberLiteralError(Error):
-    def __init__(self, source, start, end, error_kind, details):
+    def __init__(self, source, start, end):
         # TODO: make it show where the end is
         super().__init__(source, start, end, 'invalid number literal')
+
+
+class ReturnOutsideFunctionError(Error):
+    def __init__(self, source, start, end):
+        super().__init__(source, start, end, 'return outside function')
+
+
+class ContinueOutsideLoopError(Error):
+    def __init__(self, source, start, end):
+        super().__init__(source, start, end, 'continue outside loop')
+
+
+class BreakOutsideLoopError(Error):
+    def __init__(self, source, start, end):
+        super().__init__(source, start, end, 'break outside loop')
 
 
 # TODO: put the enums in a different file
@@ -105,5 +133,7 @@ class ErrorKind(Enum):
     UNTERMINATED_STRING_LITERAL = UnterminatedStringLiteralError
     INVALID_NUMBER_LITERAL = InvalidNumberLiteralError
     ILLEGAL_CHARACTER = IllegalCharacterError
-    #= auto()
-    #= auto()
+
+    RETURN_OUTSIDE_FUNCTION_ERROR = ReturnOutsideFunctionError
+    CONTINUE_OUTSIDE_LOOP_ERROR = ContinueOutsideLoopError
+    BREAK_OUTSIDE_LOOP_ERROR = BreakOutsideLoopError

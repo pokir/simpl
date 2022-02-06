@@ -22,9 +22,14 @@ some_func {
 ? {
   & {
     ->
+~
   }
+  ? {}
+
 }
 }
+
+->
 
 
 #>           # 1 > 3 should be false

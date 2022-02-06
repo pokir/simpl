@@ -27,6 +27,7 @@ class TokenKind(Enum):
     ELSE = auto()
 
     LOOP = auto()
+    CONTINUE = auto()
     BREAK = auto()
 
     LEFT_CURLY_BRACE = auto()
