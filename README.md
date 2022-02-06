@@ -1,6 +1,7 @@
 # simpl
 
-A small programming language
+A small programming language originally inspired by [porth](https://gitlab.com/tsoding/porth).
+(WORK IN PROGRESS)
 
 ## Notes
 
@@ -8,13 +9,14 @@ https://astexplorer.net/
 
 ## Goals
 
+- [ ] Compiles
 - [ ] Turing complete
 - [ ] Inferred types
-- [ ] Nestable statements
-- [ ] Flexible spacing
+- [x] Nestable statements
+- [x] Flexible spacing
 - [ ] Standard library
 - [ ] Errors
-  - [ ] Syntax errors
+  - [x] Syntax errors
   - [ ] Run time errors
 
 ## Syntax
