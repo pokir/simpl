@@ -17,9 +17,8 @@ some_func {
 #      }
 #   }
 #  }
-}                                        2 . 2 . 2 . 2 .
+}
 
-                                         wawwwwwwwwwwwwwwwwwwww}}}}}}}}}}}}}}
 
 #>           # 1 > 3 should be false
 
@@ -32,3 +31,5 @@ some_func {
 
 
 #F
+
+"hiii"
