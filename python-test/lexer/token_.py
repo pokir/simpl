@@ -9,5 +9,4 @@ class Token:
         string = f'{self.kind}'
         if self.literal is not None:
             string += f':{self.literal}'
-        string += f'({self.start} to {self.end})'
         return string

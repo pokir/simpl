@@ -84,7 +84,7 @@ class Parser:
                             raw=self.relative_token(-1).literal,
                             value=self.relative_token(-1).literal)
 
-    def _statement(self):
+    def _statement(self, in_loop=False, in_function=False):
         return self._push_statement() \
                or self._pop_statement() \
                \
@@ -101,16 +101,15 @@ class Parser:
                or self._greater_equals_operation() \
                or self._less_equals_operation() \
                \
-               or self._if_statement() \
-               or self._else_statement() \
+               or self._if_statement(in_loop, in_function) \
+               or self._else_statement(in_loop, in_function) \
                \
-               or self._loop_statement() \
-               or self._break_statement() \
+               or self._loop_statement(in_function) \
+               or (self._break_statement() if in_loop else None) \
                \
-               or self._function_declaration() \
-               or self._return_statement() \
+               or self._function_declaration(in_loop) \
+               or (self._return_statement() if in_function else None) \
                or self._function_call()
-
 
     def _push_statement(self):
         literal = self._literal()
@@ -212,7 +211,7 @@ class Parser:
                             self.relative_token(-1).start,
                             self.relative_token(-1).end)
 
-    def _if_statement(self):
+    def _if_statement(self, in_loop=False, in_function=False):
         # TODO: make the start and end positions useful for unmatched curly braces (for loops too)
         start_token = self.token() # save it to show errors
         if self.token().kind == TokenKind.IF \
@@ -223,7 +222,7 @@ class Parser:
                             children=[])
             self.position += 2
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
-                statement = self._statement()
+                statement = self._statement(in_loop=in_loop, in_function=in_function)
                 if statement is None: # position has not incremented if it is None
                     throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
                 node.add_child(statement)
@@ -235,7 +234,7 @@ class Parser:
             node.end = self.relative_token(-1).end # position of the last curly brace
             return node
 
-    def _else_statement(self):
+    def _else_statement(self, in_loop=False, in_function=False):
         start_token = self.token() # save it to show errors
         if self.token().kind == TokenKind.ELSE \
            and self.relative_token(1).kind == TokenKind.LEFT_CURLY_BRACE:
@@ -245,7 +244,7 @@ class Parser:
                             children=[])
             self.position += 2
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
-                statement = self._statement()
+                statement = self._statement(in_loop=in_loop, in_function=in_function)
                 if statement is None: # position has not incremented if it is None
                     throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
                 node.add_child(statement)
@@ -257,7 +256,7 @@ class Parser:
             node.end = self.relative_token(-1).end # position of the last curly brace
             return node
 
-    def _loop_statement(self):
+    def _loop_statement(self, in_function=False):
         start_token = self.token() # save it to show errors
         if self.token().kind == TokenKind.LOOP \
            and self.relative_token(1).kind == TokenKind.LEFT_CURLY_BRACE:
@@ -267,7 +266,7 @@ class Parser:
                             children=[])
             self.position += 2
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
-                statement = self._statement()
+                statement = self._statement(in_loop=True, in_function=in_function)
                 if statement is None: # position has not incremented if it is None
                     throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
                 node.add_child(statement)
@@ -286,7 +285,7 @@ class Parser:
                             self.relative_token(-1).start,
                             self.relative_token(-1).end)
 
-    def _function_declaration(self):
+    def _function_declaration(self, in_loop=False):
         start_token = self.token() # save it to show errors
         if self.token().kind == TokenKind.IDENTIFIER \
            and self.relative_token(1).kind == TokenKind.LEFT_CURLY_BRACE:
@@ -296,7 +295,7 @@ class Parser:
                             children=[])
             self.position += 2
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
-                statement = self._statement()
+                statement = self._statement(in_loop=in_loop, in_function=True)
                 if statement is None: # position has not incremented if it is None
                     throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
                 node.add_child(statement)

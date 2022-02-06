@@ -20,6 +20,4 @@ class TreeNode:
         if self.children is not None:
             string += f'{self.children}'
 
-        string += f'{self.start} to {self.end}'
-
         return string
