@@ -70,6 +70,10 @@ def show_error_in_code(source, start, end):
     raw_lines = source.split('\n')[first_line:last_line + 1]
     lines = raw_lines.copy()
 
+    # the length of the snip replacement
+    left_snip_symbol = '... '
+    right_snip_symbol = ' ...'
+
     for i in range(len(lines)):
         # make it so all the lines fit on the terminal (by removing some parts)
 
@@ -79,29 +83,27 @@ def show_error_in_code(source, start, end):
         left_slice = 0
 
         # show the error in the center
-        left_slice = max(start[1] - int(width / 2), 0)
-        right_slice = min(start[1] + int(width / 2), len(lines[i]))
+        left_slice = max(start[1] - int(width * 0.2), 0)
+        right_slice = min(start[1] + int(width * 0.8), len(lines[i]))
 
         # wheter to show "..."
         snip_left = False
         snip_right = False
         
-        # the length of the snip replacement
-        snip_length = 4
 
         if left_slice > 0:
-            left_slice += snip_length
+            left_slice += len(left_snip_symbol)
             snip_left = True
 
         if right_slice < len(lines[i]) - 1:
-            right_slice -= snip_length
+            right_slice -= len(right_snip_symbol)
             snip_right = True
 
         lines[i] = lines[i][left_slice:right_slice]
         if snip_left:
-            lines[i] = colorama.Fore.YELLOW + '... ' + colorama.Style.RESET_ALL + lines[i]
+            lines[i] = colorama.Fore.YELLOW + left_snip_symbol + colorama.Style.RESET_ALL + lines[i]
         if snip_right:# and len(raw_lines[i]) > right_slice: # the extra check removes useless snips if the previous lines don't go over the slice
-            lines[i] += colorama.Fore.YELLOW + ' ...' + colorama.Style.RESET_ALL
+            lines[i] += colorama.Fore.YELLOW + right_snip_symbol + colorama.Style.RESET_ALL
 
         lines[i] = colorama.Fore.CYAN + str(first_line + i + 1).ljust(left_offset) + colorama.Style.RESET_ALL + lines[i] # add line numbers
 
@@ -109,7 +111,7 @@ def show_error_in_code(source, start, end):
     
     string = '\n'.join(lines)
     string += '\n'
-    string += colorama.Fore.RED + '^'.rjust(start[1] + left_offset - left_slice + (snip_length if snip_left else 0)) + colorama.Style.RESET_ALL
+    string += colorama.Fore.RED + '^'.rjust(start[1] + left_offset - left_slice + (len(left_snip_symbol) if snip_left else 0)) + colorama.Style.RESET_ALL
     return string
 
 
