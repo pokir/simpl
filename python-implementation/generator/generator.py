@@ -9,4 +9,88 @@ TreeNodeKind = tree_node_kinds_.TreeNodeKind
 class Generator:
     def __init__(self, tree):
         self.tree = tree
-        
+        self.generated_code = ''
+
+    def generate(self, node):
+        pass
+
+    def _visit(self, node):
+        pass
+
+    def _visit_root(self, node):
+        pass
+
+    def _visit_identifier(self, node):
+        pass
+    
+    def _visit_push_statement(self, node):
+        pass
+
+    def _visit_pop_statement(self, node):
+        pass
+
+    def _visit_function_declaration(self, node):
+        pass
+
+    def _visit_function_call(self, node):
+        pass
+
+    def _visit_return_statement(self, node):
+        pass
+
+    def _visit_if_statement(self, node):
+        pass
+
+    def _visit_else_statement(self, node):
+        pass
+
+    def _visit_loop_statement(self, node):
+        pass
+
+    def _visit_continue_statement(self, node):
+        pass
+
+    def _visit_break_statement(self, node):
+        pass
+
+    def _visit_numeric_literal(self, node):
+        pass
+
+    def _visit_string_literal(self, node):
+        pass
+
+    def _visit_boolean_literal(self, node):
+        pass
+
+    def _visit_add_operation(self, node):
+        pass
+
+    def _visit_subtract_operation(self, node):
+        pass
+
+    def _visit_multiply_operation(self, node):
+        pass
+
+    def _visit_divide_operation(self, node):
+        pass
+
+    def _visit_modulo_operation(self, node):
+        pass
+
+    def _visit_equals_operation(self, node):
+        pass
+
+    def _visit_not_equals_operation(self, node):
+        pass
+
+    def _visit_greater_operation(self, node):
+        pass
+
+    def _visit_less_operation(self):
+        pass
+
+    def _visit_greater_equals_operation(self):
+        pass
+
+    def _visit_less_equals_operation(self):
+        pass
