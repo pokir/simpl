@@ -193,35 +193,35 @@ class Generator:
             self.generated_code += 'temp1=stack.back();'
             self.generated_code += 'stack.pop_back();'
             self.generated_code += 'temp2=stack.back();'
-            self.generated_code += 'stack.back()=(Data){temp1.type,temp1.string+temp2.string,temp1.number+temp2.number,false};'
+            self.generated_code += 'stack.back()=(Data){temp1.type,temp2.string+temp1.string,temp2.number+temp1.number,false};'
 
     def _visit_subtract_operation(self, node):
         if node.kind == TreeNodeKind.SUBTRACT_OPERATION:
             self.generated_code += 'temp1=stack.back();'
             self.generated_code += 'stack.pop_back();'
             self.generated_code += 'temp2=stack.back();'
-            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp1.number-temp2.number,false};'
+            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp2.number-temp1.number,false};'
 
     def _visit_multiply_operation(self, node):
         if node.kind == TreeNodeKind.MULTIPLY_OPERATION:
             self.generated_code += 'temp1=stack.back();'
             self.generated_code += 'stack.pop_back();'
             self.generated_code += 'temp2=stack.back();'
-            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp1.number*temp2.number,false};'
+            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp2.number*temp1.number,false};'
 
     def _visit_divide_operation(self, node):
         if node.kind == TreeNodeKind.DIVIDE_OPERATION:
             self.generated_code += 'temp1=stack.back();'
             self.generated_code += 'stack.pop_back();'
             self.generated_code += 'temp2=stack.back();'
-            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp1.number/temp2.number,false};'
+            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp2.number/temp1.number,false};'
 
     def _visit_modulo_operation(self, node):
         if node.kind == TreeNodeKind.MODULO_OPERATION:
             self.generated_code += 'temp1=stack.back();'
             self.generated_code += 'stack.pop_back();'
             self.generated_code += 'temp2=stack.back();'
-            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp1.number%temp2.number,false};'
+            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp2.number%temp1.number,false};'
 
     def _visit_equals_operation(self, node):
         if node.kind == TreeNodeKind.EQUALS_OPERATION:
