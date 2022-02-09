@@ -63,6 +63,28 @@ class Lexer:
                 if self.next_char() == '>':
                     self.tokens.append(Token(TokenKind.RETURN, '->', self.get_line_column(), self.get_line_column(2)))
                     self.position += 2
+                elif self.next_char().isnumeric():
+                    start = self.get_line_column()
+                    buffer = self.char() + self.next_char()
+                    self.position += 2  # skip both the negative number and the first digit
+
+                    while self.char().isnumeric() \
+                          or (self.char() == '.' and '.' not in buffer) \
+                          or self.char() == '_':
+
+                        # TODO: make it so ending _ is ignored (not errored)
+                        # so that it can be scanned again
+                        if self.char() == '_':
+                            if self.next_char().isnumeric():
+                                self.position += 1
+                                continue
+                            else:
+                                throw_error(self.source, ErrorKind.INVALID_NUMBER_LITERAL, start, self.get_line_column())
+
+                        buffer += self.char()
+                        self.position += 1
+
+                    self.tokens.append(Token(TokenKind.NUMBER, buffer, start, self.get_line_column()))
                 else:
                     self.tokens.append(Token(TokenKind.SUBTRACT, '-', self.get_line_column(), self.get_line_column(1)))
                     self.position += 1
