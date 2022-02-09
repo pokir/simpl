@@ -2,7 +2,7 @@
 *.swp
 *.swo
 
-/target
+target
 
 # For python
 venv
