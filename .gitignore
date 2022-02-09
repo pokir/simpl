@@ -2,6 +2,7 @@
 *.swp
 *.swo
 
+# For rust
 target
 
 # For python
