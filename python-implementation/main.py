@@ -1,14 +1,16 @@
-from enum import Enum, auto
+import os
 import sys
 
+from enum import Enum, auto
+from errors import errors
+from generator import generator
 from lexer import lexer
 from parser import parser
-
-from errors import errors
 
 
 Lexer = lexer.Lexer
 Parser = parser.Parser
+Generator = generator.Generator
 # For the future when it will show all errors:
 #show_errors = errors.show_errors
 
@@ -32,6 +34,18 @@ def main():
     print('Parser output:')
     print(prsr.tree)
     print()
+
+    gnrtr = Generator(prsr.tree)
+    gnrtr.generate()
+    
+    print('Generator output:')
+    print(gnrtr.generated_code)
+    print()
+
+    #with open('out.cpp', 'w') as f:
+    #    f.write(gnrtr.generated_code)
+
+    os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++14 -')
 
     # For the future when it will show all errors:
     #show_errors()

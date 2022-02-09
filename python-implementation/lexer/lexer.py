@@ -92,6 +92,7 @@ class Lexer:
                     self.position += 2
                 else:
                     self.tokens.append(Token(TokenKind.CALL, '!', self.get_line_column(), self.get_line_column(1)))
+                    self.position += 1
 
             elif self.char() == '~':
                 self.tokens.append(Token(TokenKind.CONTINUE, '^', self.get_line_column(), self.get_line_column(1)))

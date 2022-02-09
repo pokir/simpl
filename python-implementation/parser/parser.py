@@ -344,5 +344,5 @@ class Parser:
             return TreeNode(TreeNodeKind.FUNCTION_CALL,
                             self.relative_token(-2).start,
                             self.relative_token(-1).end,
-                            raw=self.relative_token(-2),
-                            value=self.relative_token(-2))
+                            raw=self.relative_token(-2).literal,
+                            value=self.relative_token(-2).literal)
