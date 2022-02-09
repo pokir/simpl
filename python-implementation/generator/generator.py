@@ -11,20 +11,24 @@ class Generator:
         self.tree = tree
         self.generated_code = ''
 
-    def generate(self, node):
-        pass
+    def generate(self):
+        self._visit(self.tree)
 
     def _visit(self, node):
-        pass
+        
 
     def _visit_root(self, node):
-        pass
+        if node.kind == TreeNodeKind.ROOT:
+            for child in node.children:
+                self._visit(child)
 
-    def _visit_identifier(self, node):
-        pass
+    #def _visit_identifier(self, node):
+    #    if node.kind == TreeNodeKind.IDENTIFIER:
+            
     
     def _visit_push_statement(self, node):
-        pass
+        if node.kind == TreeNodeKind.PUSH_STATEMENT:
+            self.generated_code += ''
 
     def _visit_pop_statement(self, node):
         pass
