@@ -146,7 +146,7 @@ class Lexer:
 
             elif self.char() == '>':
                 if self.next_char() == '=':
-                    self.tokens.append(Token(TokenKind.GREATER_OR_EQUALS, '!=', self.get_line_column(), self.get_line_column(2)))
+                    self.tokens.append(Token(TokenKind.GREATER_EQUALS, '!=', self.get_line_column(), self.get_line_column(2)))
                     self.position += 2
                 else:
                     self.tokens.append(Token(TokenKind.GREATER, '>', self.get_line_column(), self.get_line_column(1)))
