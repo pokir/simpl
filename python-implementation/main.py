@@ -18,8 +18,13 @@ Generator = generator.Generator
 def main():
     filename = sys.argv[1]
 
-    with open(filename, 'r') as f:
+    # Load standard library
+    with open('./std/std.simpl', 'r') as f:
         source = f.read()
+
+    # Load file
+    with open(filename, 'r') as f:
+        source += f.read()
 
     lxr = Lexer(source)
     lxr.lex()

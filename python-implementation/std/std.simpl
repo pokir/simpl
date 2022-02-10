@@ -1,7 +1,12 @@
 duplicate {
   # Duplicates the top of the stack
-
   @ temp
   temp .
   temp .
+}
+
+println {
+  print!
+  '\n' .
+  print!
 }
