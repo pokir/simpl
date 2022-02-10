@@ -106,7 +106,7 @@ class Generator:
                 self.generated_code += 'stack.push_back(Data());'
                 if node.children[0].kind == TreeNodeKind.STRING_LITERAL:
                     self.generated_code += 'stack.back().type=0;'
-                    self.generated_code += f'stack.back().string="{node.children[0].value}";'
+                    self.generated_code += f'stack.back().string="{repr(node.children[0].value)[1:-1]}";'
                 elif node.children[0].kind == TreeNodeKind.NUMERIC_LITERAL:
                     self.generated_code += 'stack.back().type=1;'
                     self.generated_code += f'stack.back().number={node.children[0].value};'
