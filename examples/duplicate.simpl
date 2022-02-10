@@ -1,4 +1,5 @@
 # Duplicates the top of the stack to double a number
+# Note: this mimicks the duplicate function in the standard library
 
 2 .
 @ temp
