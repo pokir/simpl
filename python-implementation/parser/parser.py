@@ -311,6 +311,8 @@ class Parser:
             node = TreeNode(TreeNodeKind.FUNCTION_DECLARATION,
                             self.token().start,
                             None, # unknown end (will be updated later)
+                            raw=self.token().literal,
+                            value=self.token().literal, # store function name
                             children=[])
             self.position += 2
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
