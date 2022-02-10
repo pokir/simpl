@@ -114,8 +114,9 @@ class Parser:
 
     def _push_statement(self):
         literal = self._literal()
-        if literal is None: # NOTE: position has not been incremented
-            return
+        identifier = self._identifier()
+        if literal is None and identifier is None: # NOTE: position has not been incremented
+            return 
         elif self.token().kind != TokenKind.PUSH:
             self.position -= 1 # undo the advance
             return
@@ -124,7 +125,7 @@ class Parser:
         return TreeNode(TreeNodeKind.PUSH_STATEMENT,
                         self.relative_token(-2).start,
                         self.relative_token(-1).end,
-                        children=[literal])
+                        children=[literal or identifier])
 
     def _pop_statement(self):
         if self.token().kind == TokenKind.POP:
