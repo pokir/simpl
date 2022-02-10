@@ -1,0 +1,7 @@
+duplicate {
+  # Duplicates the top of the stack
+
+  @ temp
+  temp .
+  temp .
+}
