@@ -41,9 +41,9 @@ class Generator:
         # load std functions written in c++
 
         # print
-        self.generated_code += 'functions.insert('
-        self.generated_code += 'std::pair<std::string,std::function<void()> >'
-        self.generated_code += '("print",'
+        self.generated_code += 'functions.insert_or_assign('
+        #self.generated_code += 'std::pair<std::string,std::function<void()> >'
+        self.generated_code += '"print",'
         self.generated_code += '[&stack](){'
         self.generated_code += 'if(stack.back().type==0)'
         self.generated_code += 'std::cout<<stack.back().string;'
@@ -52,7 +52,7 @@ class Generator:
         self.generated_code += 'else if(stack.back().type==2)'
         self.generated_code += 'std::cout<<stack.back().boolean;'
         self.generated_code += '/*stack.pop_back();*/'
-        self.generated_code += '}));'
+        self.generated_code += '});'
 
         self._visit(self.tree)
 
@@ -116,20 +116,20 @@ class Generator:
 
     def _visit_pop_statement(self, node):
         if node.kind == TreeNodeKind.POP_STATEMENT:
-            self.generated_code += f'variables.insert(std::pair<std::string,Data>("{node.children[0].value}",stack.back()));'
+            self.generated_code += f'variables.insert_or_assign("{node.children[0].value}",stack.back());'
             self.generated_code += 'stack.pop_back();'
 
     def _visit_function_declaration(self, node):
         if node.kind == TreeNodeKind.FUNCTION_DECLARATION:
-            self.generated_code += 'functions.insert('
-            self.generated_code += 'std::pair<std::string,std::function<void()> >'
-            self.generated_code += f'("{node.value}",'
+            self.generated_code += 'functions.insert_or_assign('
+            #self.generated_code += 'std::pair<std::string,std::function<void()> >'
+            self.generated_code += f'"{node.value}",'
             self.generated_code += '[&stack](){'
             
             for child in node.children:
                 self._visit(child);
 
-            self.generated_code += '}));'
+            self.generated_code += '});'
 
 
     def _visit_function_call(self, node):
