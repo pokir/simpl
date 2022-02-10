@@ -101,7 +101,7 @@ class Generator:
     def _visit_push_statement(self, node):
         if node.kind == TreeNodeKind.PUSH_STATEMENT:
             if node.children[0].kind == TreeNodeKind.IDENTIFIER:
-                self.generated_code += f'stack.push_back(variables.at({node.children[0].value}));'
+                self.generated_code += f'stack.push_back(variables.at("{node.children[0].value}"));'
             else:
                 self.generated_code += 'stack.push_back(Data());'
                 if node.children[0].kind == TreeNodeKind.STRING_LITERAL:
@@ -116,7 +116,7 @@ class Generator:
 
     def _visit_pop_statement(self, node):
         if node.kind == TreeNodeKind.POP_STATEMENT:
-            self.generated_code += f'variables.insert(std::pair<std::string,Data>({node.children[1].value},stack.back()));'
+            self.generated_code += f'variables.insert(std::pair<std::string,Data>("{node.children[0].value}",stack.back()));'
             self.generated_code += 'stack.pop_back();'
 
     def _visit_function_declaration(self, node):
