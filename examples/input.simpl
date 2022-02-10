@@ -1,0 +1,8 @@
+# Asks the user for their name
+
+'What is your name? ' .  print!
+input!
+'Hello, ' .  print!
+@ _
+print!
+'!' . println!

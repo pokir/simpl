@@ -44,6 +44,7 @@ class Generator:
         self.generated_code += 'functions.insert_or_assign('
         self.generated_code += '"print",'
         self.generated_code += '[&stack,&variables,&functions](){'
+
         self.generated_code += 'if(stack.back().type==0)'
         self.generated_code += 'std::cout<<stack.back().string;'
         self.generated_code += 'else if(stack.back().type==1)'
@@ -51,7 +52,21 @@ class Generator:
         self.generated_code += 'else if(stack.back().type==2)'
         self.generated_code += 'std::cout<<stack.back().boolean;'
         #self.generated_code += '/*stack.pop_back();*/'
+
         self.generated_code += '});'
+        # end print
+
+        # input
+        self.generated_code += 'functions.insert_or_assign('
+        self.generated_code += '"input",'
+        self.generated_code += '[&stack,&variables,&functions](){'
+
+        self.generated_code += 'stack.push_back(Data());'
+        self.generated_code += 'stack.back().type=0;'
+        self.generated_code += 'std::cin >> stack.back().string;'
+
+        self.generated_code += '});'
+        # end input
 
         self._visit(self.tree)
 
