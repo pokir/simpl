@@ -42,10 +42,10 @@ def main():
     print(gnrtr.generated_code)
     print()
 
-    #with open('out.cpp', 'w') as f:
+    #with open(f'{filename}.cpp', 'w') as f:
     #    f.write(gnrtr.generated_code)
 
-    os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++17 -')
+    os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++1z -')
 
     # For the future when it will show all errors:
     #show_errors()
