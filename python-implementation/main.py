@@ -45,7 +45,7 @@ def main():
     #with open('out.cpp', 'w') as f:
     #    f.write(gnrtr.generated_code)
 
-    os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++14 -')
+    os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++17 -')
 
     # For the future when it will show all errors:
     #show_errors()
