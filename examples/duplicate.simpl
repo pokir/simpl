@@ -1,0 +1,9 @@
+# Duplicates the top of the stack to double a number
+
+2 .
+@ temp
+temp .
+temp .
++ print!
+'\n' . print! @ _
+

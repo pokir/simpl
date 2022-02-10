@@ -1,0 +1,21 @@
+# Prints numbers from 0 to 10 using a loop
+
+0 .
+# 0
+
+& {
+  print!
+  1 .  +
+  '\n' . print! @ _
+
+  # duplicate the top for the comparison
+  @ temp
+  temp .
+  temp .
+
+  10 .
+  >= ? {
+    ^
+  }
+  @ _ # removes the boolean result
+}

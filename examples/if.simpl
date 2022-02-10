@@ -1,0 +1,9 @@
+# Checks if 8 > 2 and prints out 'yes' if it is true
+
+8 .
+2 .
+>
+? {
+  'yes!' . print!
+  '\n' . print!
+}

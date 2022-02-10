@@ -1,0 +1,7 @@
+# Pops the top of the stack into a variable
+
+2 .
+@ a
+a . print!
+
+'\n' . print!
