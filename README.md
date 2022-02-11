@@ -1,6 +1,6 @@
 # simpl
 
-A small programming language originally inspired by [porth](https://gitlab.com/tsoding/porth).
+A small stack based programming language originally inspired by [porth](https://gitlab.com/tsoding/porth).
 
 This is just a small language to learn how compilers work.
 
@@ -12,12 +12,11 @@ https://astexplorer.net/
 
 ## Goals
 
-- [ ] Compiles
+- [x] Compiles
 - [ ] Turing complete
-- [ ] Inferred types
 - [x] Nestable statements
 - [x] Flexible spacing
-- [ ] Standard library
+- [x] Standard library
 - [ ] Errors
   - [x] Syntax errors
   - [ ] Run time errors
