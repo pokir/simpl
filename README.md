@@ -135,12 +135,13 @@ factorial!    # put a ! at the end of the name
 
 - Input/output
 ```
-# ???????
+# Printing:
+'Hello world!' . print!
+'Hello world!' . println!
 
-# For now:
+# Text input
+'What is your name? ' . print!
+input!
+'Your name is ' . print! @_
 print!
 ```
-
-Ideas:
-  - syscalls
-
