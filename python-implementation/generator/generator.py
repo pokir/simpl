@@ -43,7 +43,7 @@ class Generator:
         # print
         self.generated_code += 'functions.insert_or_assign('
         self.generated_code += '"print",'
-        self.generated_code += '[&stack,&variables,&functions](){'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
 
         self.generated_code += 'if(stack.back().type==0)'
         self.generated_code += 'std::cout<<stack.back().string;'
@@ -59,7 +59,7 @@ class Generator:
         # input
         self.generated_code += 'functions.insert_or_assign('
         self.generated_code += '"input",'
-        self.generated_code += '[&stack,&variables,&functions](){'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
 
         self.generated_code += 'stack.push_back(Data());'
         self.generated_code += 'stack.back().type=0;'
@@ -71,7 +71,7 @@ class Generator:
         # system
         self.generated_code += 'functions.insert_or_assign('
         self.generated_code += '"system",'
-        self.generated_code += '[&stack,&variables,&functions](){'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
 
         self.generated_code += 'stack.push_back((Data){1,"",(double) std::system(stack.back().string.c_str()),false});'
 
@@ -148,7 +148,7 @@ class Generator:
             self.generated_code += 'functions.insert_or_assign('
             #self.generated_code += 'std::pair<std::string,std::function<void()> >'
             self.generated_code += f'"{node.value}",'
-            self.generated_code += '[&stack,&variables,&functions](){'
+            self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
             
             for child in node.children:
                 self._visit(child);
