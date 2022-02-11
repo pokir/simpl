@@ -68,6 +68,16 @@ class Generator:
         self.generated_code += '});'
         # end input
 
+        # system
+        self.generated_code += 'functions.insert_or_assign('
+        self.generated_code += '"system",'
+        self.generated_code += '[&stack,&variables,&functions](){'
+
+        self.generated_code += 'stack.push_back((Data){1,"",(double) std::system(stack.back().string.c_str()),false});'
+
+        self.generated_code += '});'
+        # end system
+
         self._visit(self.tree)
 
         self.generated_code += 'return 0;'

@@ -1,0 +1,5 @@
+# Runs the ls command and prints the exit code
+
+'ls' . system!
+'Exit code: ' . print! @_
+println!
