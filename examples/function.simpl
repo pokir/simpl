@@ -1,0 +1,8 @@
+# A function
+
+print_hi {
+  'Hi!' . println!
+}
+
+print_hi!
+print_hi!
