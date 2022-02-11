@@ -1,10 +1,5 @@
-# Duplicates the top of the stack to double a number
-# Note: this mimicks the duplicate function in the standard library
+# Duplicates n items on the top of the stack
 
-2 .
-@ temp
-temp .
-temp .
-+ print!
-'\n' . print! @ _
-
+9 . 8 . 7 . 6 . 5 . 4 . 3 . 2 . 1 . 0 .
+5 . duplicate! # duplicates the top five items
+print_stack!

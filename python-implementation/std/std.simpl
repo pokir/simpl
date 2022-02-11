@@ -1,12 +1,37 @@
-duplicate {
-  # Duplicates the top of the stack
-  @ temp
-  temp .
-  temp .
+println {
+  # Prints with a newline
+  print!
+  '\n' . print! @_
 }
 
-println {
-  print!
-  '\n' .
-  print!
+pop {
+  # Pops n number of items from the stack
+  @ counter
+
+  & {
+    counter .  0 . <= ? {
+      @_         # remove the boolean result
+      ^
+    }
+    @_           # remove the boolean result
+    counter .  1 . -
+    @ counter
+  }
+}
+
+print_stack {
+  stack_size! @ counter
+  counter . duplicate!
+  & {
+    counter . 0 . <= ? {
+      @_
+      ^
+    }
+
+    counter . 1 . -
+    @ counter
+
+    println!
+    @_
+  }
 }

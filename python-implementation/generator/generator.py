@@ -50,7 +50,7 @@ class Generator:
         self.generated_code += 'else if(stack.back().type==1)'
         self.generated_code += 'std::cout<<stack.back().number;'
         self.generated_code += 'else if(stack.back().type==2)'
-        self.generated_code += 'std::cout<<stack.back().boolean;'
+        self.generated_code += 'std::cout<<(stack.back().boolean?"T":"F");'
         #self.generated_code += '/*stack.pop_back();*/'
 
         self.generated_code += '});'
@@ -63,7 +63,7 @@ class Generator:
 
         self.generated_code += 'stack.push_back(Data());'
         self.generated_code += 'stack.back().type=0;'
-        self.generated_code += 'std::cin >> stack.back().string;'
+        self.generated_code += 'std::cin>>stack.back().string;'
 
         self.generated_code += '});'
         # end input
@@ -73,10 +73,35 @@ class Generator:
         self.generated_code += '"system",'
         self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
 
-        self.generated_code += 'stack.push_back((Data){1,"",(double) std::system(stack.back().string.c_str()),false});'
+        self.generated_code += 'stack.push_back((Data){1,"",(double)std::system(stack.back().string.c_str()),false});'
 
         self.generated_code += '});'
         # end system
+
+        # stack_size
+        self.generated_code += 'functions.insert_or_assign('
+        self.generated_code += '"stack_size",'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
+
+        self.generated_code += 'stack.push_back((Data){1,"",(double)stack.size(),false});'
+
+        self.generated_code += '});'
+        # end stack_size
+
+        # duplicate
+        self.generated_code += 'functions.insert_or_assign('
+        self.generated_code += '"duplicate",'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
+
+        self.generated_code += 'int num=stack.back().number;' # temporary var in lambda function scope
+        self.generated_code += 'stack.pop_back();'
+        self.generated_code += 'int size=stack.size();' # temporary var in lambda function scope
+        self.generated_code += 'for(int i=0;i<num;++i){'
+        self.generated_code += 'stack.push_back(stack.at(size-num+i));'
+        self.generated_code += '}'
+
+        self.generated_code += '});'
+        # end duplicate
 
         self._visit(self.tree)
 
@@ -329,7 +354,8 @@ class Generator:
             self.generated_code += 'stack.push_back((Data){2,"",0,false});'
 
             # if the types are the same and the type is a number and the first number is greater than or equal to the second one, true
-            self.generated_code += 'else if(temp2.number>=temp1.number)stack.push_back((Data){2,"",0,true});'
+            self.generated_code += 'else if(temp2.number>=temp1.number)'
+            self.generated_code += 'stack.push_back((Data){2,"",0,true});'
 
     def _visit_less_equals_operation(self, node):
         if node.kind == TreeNodeKind.LESS_EQUALS_OPERATION:
@@ -343,4 +369,5 @@ class Generator:
             self.generated_code += 'stack.push_back((Data){2,"",0,false});'
 
             # if the types are the same and the type is a number and the first number is less than or equal to the second one, true
-            self.generated_code += 'else if(temp2.number<=temp1.number)stack.push_back((Data){2,"",0,true});'
+            self.generated_code += 'else if(temp2.number<=temp1.number)'
+            self.generated_code += 'stack.push_back((Data){2,"",0,true});'

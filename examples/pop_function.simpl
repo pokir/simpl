@@ -1,0 +1,11 @@
+# Uses the pop function from the standard library
+
+9 . 8 . 7 . 6 . 5 . 4 . 3 . 2 . 1 . 0 .
+
+'Stack size before pop: ' . print! @_
+stack_size! println! @_
+
+2 . pop! # pops two items off the stack
+
+'Stack size after pop: ' . print! @_
+stack_size! println!
