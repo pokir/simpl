@@ -38,7 +38,7 @@ class Generator:
         self.generated_code += 'Data temp1;'
         self.generated_code += 'Data temp2;'
 
-        # load std functions written in c++
+        # STD FUNCTIONS WRITTEN IN C++
 
         # print
         self.generated_code += 'functions.insert_or_assign('
@@ -102,6 +102,8 @@ class Generator:
 
         self.generated_code += '});'
         # end duplicate
+
+        # END OF STD FUNCTIONS
 
         self._visit(self.tree)
 
