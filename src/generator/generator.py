@@ -200,8 +200,6 @@ class Generator:
 
         self._visit(self.tree)
 
-        self.generated_code += 'std::cout<<"DEBUG " << variables.size()<<std::endl;'
-        self.generated_code += 'std::cout<<"DEBUG " << scope<<std::endl;'
         self.generated_code += 'return 0;'
         self.generated_code += '}'
 
