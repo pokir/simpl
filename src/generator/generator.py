@@ -103,6 +103,55 @@ class Generator:
         self.generated_code += '});'
         # end duplicate
 
+        # num_to_str
+        self.generated_code += 'functions.insert_or_assign('
+        self.generated_code += '"num_to_str",'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
+
+        self.generated_code += 'temp1=stack.back();'
+        self.generated_code += 'stack.pop_back();'
+        self.generated_code += 'stack.push_back((Data){0,std::to_string(temp1.number),0,false});'
+
+        self.generated_code += '});'
+        # end num_to_str
+
+        # str_to_num
+        self.generated_code += 'functions.insert_or_assign('
+        self.generated_code += '"str_to_num",'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
+
+        self.generated_code += 'temp1=stack.back();'
+        self.generated_code += 'stack.pop_back();'
+        self.generated_code += 'stack.push_back((Data){1,"",std::stod(temp1.string),false});'
+
+        self.generated_code += '});'
+        # end str_to_num
+
+        # type_of
+        self.generated_code += 'functions.insert_or_assign('
+        self.generated_code += '"type_of",'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
+
+        self.generated_code += 'if(stack.back().type==0)'
+        self.generated_code += 'stack.push_back((Data){0,"string",0,false});'
+        self.generated_code += 'else if(stack.back().type==1)'
+        self.generated_code += 'stack.push_back((Data){0,"number",0,false});'
+        self.generated_code += 'else if(stack.back().type==2)'
+        self.generated_code += 'stack.push_back((Data){0,"boolean",0,false});'
+
+        self.generated_code += '});'
+        # end type_of
+
+        # exit
+        self.generated_code += 'functions.insert_or_assign('
+        self.generated_code += '"exit",'
+        self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
+
+        self.generated_code += 'std::exit((int)stack.back().number);'
+
+        self.generated_code += '});'
+        # end exit
+
         # END OF STD FUNCTIONS
 
         self._visit(self.tree)
@@ -202,7 +251,7 @@ class Generator:
 
     def _visit_else_statement(self, node):
         if node.kind == TreeNodeKind.ELSE_STATEMENT:
-            self.generated_code += 'if(stack.back().type!=2||!stack.back().boolean)){'
+            self.generated_code += 'if(stack.back().type!=2||!stack.back().boolean){'
         
             for child in node.children:
                 self._visit(child)
@@ -330,6 +379,9 @@ class Generator:
             # if the types are the same and the type is a number and the first number is greater than the second one, true
             self.generated_code += 'else if(temp2.number>temp1.number)stack.push_back((Data){2,"",0,true});'
 
+            # else false
+            self.generated_code += 'else stack.push_back((Data){2,"",0,false});'
+
     def _visit_less_operation(self, node):
         if node.kind == TreeNodeKind.LESS_OPERATION:
             self.generated_code += 'temp1=stack.back();'
@@ -342,7 +394,11 @@ class Generator:
             self.generated_code += 'stack.push_back((Data){2,"",0,false});'
 
             # if the types are the same and the type is a number and the first number is less than the second one, true
-            self.generated_code += 'else if(temp2.number<temp1.number)stack.push_back((Data){2,"",0,true});'
+            self.generated_code += 'else if(temp2.number<temp1.number)'
+            self.generated_code += 'stack.push_back((Data){2,"",0,true});'
+
+            # else false
+            self.generated_code += 'else stack.push_back((Data){2,"",0,false});'
 
     def _visit_greater_equals_operation(self, node):
         if node.kind == TreeNodeKind.GREATER_EQUALS_OPERATION:
@@ -359,6 +415,9 @@ class Generator:
             self.generated_code += 'else if(temp2.number>=temp1.number)'
             self.generated_code += 'stack.push_back((Data){2,"",0,true});'
 
+            # else false
+            self.generated_code += 'else stack.push_back((Data){2,"",0,false});'
+
     def _visit_less_equals_operation(self, node):
         if node.kind == TreeNodeKind.LESS_EQUALS_OPERATION:
             self.generated_code += 'temp1=stack.back();'
@@ -370,6 +429,9 @@ class Generator:
             self.generated_code += 'if(temp1.type!=temp2.type||temp1.type!=1)'
             self.generated_code += 'stack.push_back((Data){2,"",0,false});'
 
-            # if the types are the same and the type is a number and the first number is less than or equal to the second one, true
+            # if the types are the same type and the type is a number and the first number is less than or equal to the second one, true
             self.generated_code += 'else if(temp2.number<=temp1.number)'
             self.generated_code += 'stack.push_back((Data){2,"",0,true});'
+
+            # else false
+            self.generated_code += 'else stack.push_back((Data){2,"",0,false});'
