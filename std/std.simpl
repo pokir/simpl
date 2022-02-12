@@ -90,6 +90,7 @@ round {
 
 
 pow {
+  # TODO: allow fractional exponents
   @ exponent
   @ base
 
