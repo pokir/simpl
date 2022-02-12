@@ -16,14 +16,15 @@ Generator = generator.Generator
 
 
 def main():
-    filename = sys.argv[1]
+    filepath = sys.argv[1]
+    filename = filepath.split('/')[-1]
 
     # Load standard library
     with open('./std/std.simpl', 'r') as f:
         source = f.read()
 
     # Load file
-    with open(filename, 'r') as f:
+    with open(filepath, 'r') as f:
         source += f.read()
 
     lxr = Lexer(source)
@@ -47,10 +48,11 @@ def main():
     print(gnrtr.generated_code)
     print()
 
-    #with open(f'{filename}.cpp', 'w') as f:
+    #with open(f'{filepath}.cpp', 'w') as f:
     #    f.write(gnrtr.generated_code)
 
-    os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++1z -')
+    if not os.path.isdir('build'): os.mkdir('build')
+    os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++1z -o build/{"".join(filename.split(".")[:-1])} -')
 
     # For the future when it will show all errors:
     #show_errors()
