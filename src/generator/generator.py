@@ -74,6 +74,12 @@ class Generator:
         self.generated_code += '}'
         self.generated_code += '}'
 
+        # cleans all scopes until there are only targetScope scopes
+        self.generated_code += 'void cleanScopes(int targetScope){'
+        self.generated_code += 'while(variables.size()>targetScope+1)'
+        self.generated_code += 'variables.pop_back();'
+        self.generated_code += '}'
+
         self.generated_code += 'int main(){'
 
         # STD FUNCTIONS WRITTEN IN C++
@@ -194,6 +200,8 @@ class Generator:
 
         self._visit(self.tree)
 
+        self.generated_code += 'std::cout<<"DEBUG " << variables.size()<<std::endl;'
+        self.generated_code += 'std::cout<<"DEBUG " << scope<<std::endl;'
         self.generated_code += 'return 0;'
         self.generated_code += '}'
 
@@ -262,18 +270,19 @@ class Generator:
             self.generated_code += 'functions.insert_or_assign('
             self.generated_code += f'"{node.value}",'
             self.generated_code += '[](){'
-            self.generated_code += '++scope;'
+            self.generated_code += 'int _scope=scope;'
+            self.generated_code += 'int scope=_scope+1;'
             
             for child in node.children:
                 self._visit(child);
 
-            self.generated_code += '--scope;'
             self.generated_code += '});'
 
 
     def _visit_function_call(self, node):
         if node.kind == TreeNodeKind.FUNCTION_CALL:
             self.generated_code += f'functions.at("{node.value}")();'
+            self.generated_code += 'cleanScopes(scope);'
 
     def _visit_return_statement(self, node):
         if node.kind == TreeNodeKind.RETURN_STATEMENT:
@@ -282,35 +291,38 @@ class Generator:
     def _visit_if_statement(self, node):
         if node.kind == TreeNodeKind.IF_STATEMENT:
             self.generated_code += 'if(stack.back().type==2&&stack.back().boolean){'
-            self.generated_code += '++scope;'
+            self.generated_code += 'int _scope=scope;'
+            self.generated_code += 'int scope=_scope+1;'
         
             for child in node.children:
                 self._visit(child)
 
-            self.generated_code += '--scope;'
             self.generated_code += '}'
+            self.generated_code += 'cleanScopes(scope);'
 
     def _visit_else_statement(self, node):
         if node.kind == TreeNodeKind.ELSE_STATEMENT:
             self.generated_code += 'if(stack.back().type!=2||!stack.back().boolean){'
-            self.generated_code += '++scope;'
+            self.generated_code += 'int _scope=scope;'
+            self.generated_code += 'int scope=_scope+1;'
         
             for child in node.children:
                 self._visit(child)
 
-            self.generated_code += '--scope;'
             self.generated_code += '}'
+            self.generated_code += 'cleanScopes(scope);'
 
     def _visit_loop_statement(self, node):
         if node.kind == TreeNodeKind.LOOP_STATEMENT:
             self.generated_code += 'while(true){'
-            self.generated_code += '++scope;'
+            self.generated_code += 'int _scope=scope;'
+            self.generated_code += 'int scope=_scope+1;'
         
             for child in node.children:
                 self._visit(child)
 
-            self.generated_code += '--scope;'
             self.generated_code += '}'
+            self.generated_code += 'cleanScopes(scope);'
 
     def _visit_continue_statement(self, node):
         if node.kind == TreeNodeKind.CONTINUE_STATEMENT:
