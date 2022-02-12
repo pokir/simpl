@@ -27,11 +27,12 @@ print_stack {
       @_
       ^
     }
-
-    counter . 1 . -
-    @ counter
+    @_
 
     println!
     @_
+
+    counter . 1 . -
+    @ counter
   }
 }

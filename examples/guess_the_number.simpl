@@ -1,0 +1,30 @@
+# A guess the number game
+
+10 . # the number
+@ number
+
+& {
+  'Guess a number between 0 and 100: ' . print! @_
+  input! str_to_num! @ guess
+
+  guess . number . < ? {
+    @_ # pops the boolean
+    'HIGHER!' . println! @_
+    ~
+  }
+  @_ # pops the boolean
+
+  guess . number . > ? {
+    @_ # pops the boolean
+    'LOWER!' . println! @_
+  }
+  @_ # pops the boolean
+
+  guess . number . == ? {
+    @_ # pops the boolean
+    'CORRECT!' . println! @_
+    ^
+  }
+}
+
+print_stack!
