@@ -12,6 +12,7 @@ class Generator:
         self.generated_code = ''
 
     def generate(self):
+        self.generated_code += '#include <cmath>\n'
         self.generated_code += '#include <iostream>\n'
         self.generated_code += '#include <functional>\n'
         self.generated_code += '#include <map>\n'
@@ -321,7 +322,7 @@ class Generator:
             self.generated_code += 'temp1=stack.back();'
             self.generated_code += 'stack.pop_back();'
             self.generated_code += 'temp2=stack.back();'
-            self.generated_code += 'stack.back()=(Data){temp1.type,"",temp2.number%temp1.number,false};'
+            self.generated_code += 'stack.back()=(Data){temp1.type,"",std::fmod(temp2.number,temp1.number),false};'
 
     def _visit_equals_operation(self, node):
         if node.kind == TreeNodeKind.EQUALS_OPERATION:
