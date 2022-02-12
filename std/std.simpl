@@ -1,23 +1,9 @@
+# PRINTING
+
 println {
   # Prints with a newline
   print!
   '\n' . print! @_
-}
-
-
-pop {
-  # Pops n number of items from the stack
-  @ counter
-
-  & {
-    counter .  0 . <= ? {
-      @_         # remove the boolean result
-      ^
-    }
-    @_           # remove the boolean result
-    counter .  1 . -
-    @ counter
-  }
 }
 
 
@@ -40,6 +26,33 @@ print_stack {
 }
 
 
+# STACK MANIPULATION
+
+pop {
+  # Pops n number of items from the stack
+  @ counter
+
+  & {
+    counter .  0 . <= ? {
+      @_         # remove the boolean result
+      ^
+    }
+    @_           # remove the boolean result
+    counter .  1 . -
+    @ counter
+  }
+}
+
+flip {
+  # TODO: make this a function that flips n items on the stack
+  # Example: 0 0 0 1 1 1
+  # 3 . flip!
+  # should give 1 1 1 0 0 0
+}
+
+
+# TYPES
+
 is_str {
   type_of! 'str' . ==
 }
@@ -54,6 +67,8 @@ is_bool {
   type_of! 'bool' . ==
 }
 
+
+# MATH
 
 floor {
   1 . duplicate!
@@ -71,4 +86,51 @@ ceil {
 round {
   0.5 . +
   floor!
+}
+
+
+pow {
+  @ exponent
+  @ base
+
+  exponent . @ counter
+
+  1 .
+
+  exponent . 0 . >= ? {
+    @_
+    & {
+      counter . 0 . <= ? {
+        @_
+        ^
+      }
+      @_
+
+      counter . 1 . - @ counter
+
+      base . *
+    }
+    ->
+  }
+  @_
+  
+  exponent . 0 . < ? {
+    @_
+
+    counter . -1 . * @ counter
+
+    & {
+      counter . 0 . <= ? {
+        @_
+        ^
+      }
+      @_
+
+      counter . 1 . - @ counter
+
+      base . /
+    }
+    ->
+  }
+  @_
 }

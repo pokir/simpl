@@ -1,0 +1,9 @@
+# Power (exponents)
+# (Only supports integers)
+
+'2^3 = ' . print! 2 . 3 . pow! println!
+'(-2)^3 = ' . print! -2 . 3 . pow! println!
+'0^2 = ' . print! 0 . 2 . pow! println!
+'123^0 = ' . print! 123 . 0 . pow! println!
+'2^(-3) = ' . print! 2 . -3 . pow! println!
+'8^100 = ' . print! 8 . 100 . pow! println!
