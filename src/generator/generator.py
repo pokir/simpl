@@ -68,7 +68,7 @@ class Generator:
         self.generated_code += 'if(varExists(scope,name))'
         self.generated_code += 'getVar(scope,name).data=data;'
         self.generated_code += 'else{'
-        self.generated_code += 'if(variables.size()<=scope)'
+        self.generated_code += 'while(variables.size()<=scope)'
         self.generated_code += 'variables.push_back(std::map<std::string,Variable>());'
         self.generated_code += 'variables.at(scope).insert_or_assign(name,(Variable){name,data});'
         self.generated_code += '}'
