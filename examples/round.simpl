@@ -1,0 +1,13 @@
+# Rounding, flooring, and ceiling
+
+'Enter a number: ' . print! @_
+input! str_to_num! @ number
+
+'floor(' . print! number . print! ') = ' . print!
+number . floor! println!
+
+'ceil(' . print! number . print! ') = ' . print!
+number . ceil! println!
+
+'round(' . print! number . print! ') = ' . print!
+number . round! println!

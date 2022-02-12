@@ -53,3 +53,22 @@ is_num {
 is_bool {
   type_of! 'bool' . ==
 }
+
+
+floor {
+  1 . duplicate!
+  1 . %
+  -
+}
+
+
+ceil {
+  floor!
+  1 . +
+}
+
+
+round {
+  0.5 . +
+  floor!
+}
