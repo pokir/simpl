@@ -133,11 +133,11 @@ class Generator:
         self.generated_code += '[&stack,&variables,&functions,&temp1,&temp2](){'
 
         self.generated_code += 'if(stack.back().type==0)'
-        self.generated_code += 'stack.push_back((Data){0,"string",0,false});'
+        self.generated_code += 'stack.push_back((Data){0,"str",0,false});'
         self.generated_code += 'else if(stack.back().type==1)'
-        self.generated_code += 'stack.push_back((Data){0,"number",0,false});'
+        self.generated_code += 'stack.push_back((Data){0,"num",0,false});'
         self.generated_code += 'else if(stack.back().type==2)'
-        self.generated_code += 'stack.push_back((Data){0,"boolean",0,false});'
+        self.generated_code += 'stack.push_back((Data){0,"bool",0,false});'
 
         self.generated_code += '});'
         # end type_of

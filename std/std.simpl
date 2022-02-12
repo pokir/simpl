@@ -4,6 +4,7 @@ println {
   '\n' . print! @_
 }
 
+
 pop {
   # Pops n number of items from the stack
   @ counter
@@ -18,6 +19,7 @@ pop {
     @ counter
   }
 }
+
 
 print_stack {
   stack_size! @ counter
@@ -35,4 +37,19 @@ print_stack {
     counter . 1 . -
     @ counter
   }
+}
+
+
+is_str {
+  type_of! 'str' . ==
+}
+
+
+is_num {
+  type_of! 'num' . ==
+}
+
+
+is_bool {
+  type_of! 'bool' . ==
 }

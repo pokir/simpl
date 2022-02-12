@@ -1,0 +1,17 @@
+# Uses type_of, is_str, is_num, and is_bool functions
+
+4 . type_of! println!
+'foo' . type_of! println!
+F . type_of! println!
+
+'\n' . print!
+
+3 . is_num! println!
+'bar' . is_str! println!
+T . is_bool! println!
+
+'\n' . print!
+
+'foobar' . is_num! println!
+F . is_str! println!
+2 . is_bool! println!
