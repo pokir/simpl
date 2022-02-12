@@ -98,7 +98,7 @@ class Lexer:
                 self.position += 1
 
             elif self.char() == '%':
-                self.tokens.append(Token(TokenKind.MODULE, '%', self.get_line_column(), self.get_line_column(1)))
+                self.tokens.append(Token(TokenKind.MODULO, '%', self.get_line_column(), self.get_line_column(1)))
                 self.position += 1
 
             elif self.char() == '=':
