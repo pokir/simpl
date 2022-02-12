@@ -3,7 +3,7 @@
 *.swo
 
 # For rust
-target
+#target
 
 # For python
 venv
@@ -12,3 +12,4 @@ __pycache__
 
 # For c++ (compiled files)
 *.out
+build
