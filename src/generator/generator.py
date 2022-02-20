@@ -30,10 +30,11 @@ class Generator:
         self.generated_code += '#include <vector>\n'
 
         self.generated_code += 'struct Data{'
-        self.generated_code += 'short type;' # 0: string, 1: number, 2: boolean
+        self.generated_code += 'short type;' # 0: string, 1: number, 2: boolean, 3: function
         self.generated_code += 'std::string string;'
         self.generated_code += 'double number;'
         self.generated_code += 'bool boolean;'
+        self.generated_code += 'std::function<void()> function;'
         self.generated_code += '};'
 
         self.generated_code += 'struct Variable{'
@@ -44,7 +45,6 @@ class Generator:
         self.generated_code += 'int scope=0;'
         self.generated_code += 'std::vector<Data>stack;'
         self.generated_code += 'std::vector<std::map<std::string,Variable> >variables;'
-        self.generated_code += 'std::map<std::string,std::function<void()> >functions;'
         self.generated_code += 'Data temp1;'
         self.generated_code += 'Data temp2;'
 
@@ -74,6 +74,10 @@ class Generator:
         self.generated_code += '}'
         self.generated_code += '}'
 
+        self.generated_code += 'void setFunctionVar(int scope,std::string name,std::function<void()>func){'
+        self.generated_code += 'setVar(scope,name,(Data){3,"",0,false,func});'
+        self.generated_code += '}'
+
         # cleans all scopes until there are only targetScope scopes
         self.generated_code += 'void cleanScopes(int targetScope){'
         self.generated_code += 'while(variables.size()>targetScope+1)'
@@ -85,9 +89,7 @@ class Generator:
         # STD FUNCTIONS WRITTEN IN C++
 
         # print
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"print",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"print",[](){'
 
         self.generated_code += 'if(stack.back().type==0)'
         self.generated_code += 'std::cout<<stack.back().string;'
@@ -101,9 +103,7 @@ class Generator:
         # end print
 
         # input
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"input",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"input",[](){'
 
         self.generated_code += 'stack.push_back(Data());'
         self.generated_code += 'stack.back().type=0;'
@@ -113,9 +113,7 @@ class Generator:
         # end input
 
         # system
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"system",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"system",[](){'
 
         self.generated_code += 'stack.push_back((Data){1,"",(double)std::system(stack.back().string.c_str()),false});'
 
@@ -123,9 +121,7 @@ class Generator:
         # end system
 
         # stack_size
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"stack_size",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"stack_size",[](){'
 
         self.generated_code += 'stack.push_back((Data){1,"",(double)stack.size(),false});'
 
@@ -133,9 +129,7 @@ class Generator:
         # end stack_size
 
         # duplicate
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"duplicate",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"duplicate",[](){'
 
         self.generated_code += 'int num=stack.back().number;' # temporary var in lambda function scope
         self.generated_code += 'stack.pop_back();'
@@ -148,9 +142,7 @@ class Generator:
         # end duplicate
 
         # num_to_str
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"num_to_str",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"num_to_str",[](){'
 
         self.generated_code += 'temp1=stack.back();'
         self.generated_code += 'stack.pop_back();'
@@ -160,9 +152,7 @@ class Generator:
         # end num_to_str
 
         # str_to_num
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"str_to_num",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"str_to_num",[](){'
 
         self.generated_code += 'temp1=stack.back();'
         self.generated_code += 'stack.pop_back();'
@@ -172,9 +162,7 @@ class Generator:
         # end str_to_num
 
         # type_of
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"type_of",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"type_of",[](){'
 
         self.generated_code += 'if(stack.back().type==0)'
         self.generated_code += 'stack.push_back((Data){0,"str",0,false});'
@@ -187,9 +175,7 @@ class Generator:
         # end type_of
 
         # exit
-        self.generated_code += 'functions.insert_or_assign('
-        self.generated_code += '"exit",'
-        self.generated_code += '[](){'
+        self.generated_code += 'setFunctionVar(scope,"exit",[](){'
 
         self.generated_code += 'std::exit((int)stack.back().number);'
 
@@ -265,9 +251,8 @@ class Generator:
 
     def _visit_function_declaration(self, node):
         if node.kind == TreeNodeKind.FUNCTION_DECLARATION:
-            self.generated_code += 'functions.insert_or_assign('
-            self.generated_code += f'"{node.value}",'
-            self.generated_code += '[](){'
+            self.generated_code += f'setFunctionVar(scope,"{node.value}",'
+            self.generated_code += '[](){' # TODO: make sure scope is captured correctly
             self.generated_code += 'int _scope=scope;'
             self.generated_code += 'int scope=_scope+1;'
             
@@ -279,7 +264,7 @@ class Generator:
 
     def _visit_function_call(self, node):
         if node.kind == TreeNodeKind.FUNCTION_CALL:
-            self.generated_code += f'functions.at("{node.value}")();'
+            self.generated_code += f'getVar(scope, "{node.value}").data.function();'
             self.generated_code += 'cleanScopes(scope);'
 
     def _visit_return_statement(self, node):

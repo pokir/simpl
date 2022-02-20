@@ -1,0 +1,14 @@
+func {
+  'hi!' . println!
+
+  other {
+    'wow!' . println!
+  }
+
+  other!
+}
+
+func!
+
+# PROBLEM: scope VAR IN LAMBDA FUNCTIONS NOT CAPTURED EXPLICITLY
+# WHEN FUNC DECLARED INSIDE FUNC, SCOPE VAR CAPTURED IS DIFFERENT
