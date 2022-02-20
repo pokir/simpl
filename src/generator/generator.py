@@ -89,7 +89,7 @@ class Generator:
         # STD FUNCTIONS WRITTEN IN C++
 
         # print
-        self.generated_code += 'setFunctionVar(scope,"print",[](){'
+        self.generated_code += 'setFunctionVar(scope,"print",[&](){'
 
         self.generated_code += 'if(stack.back().type==0)'
         self.generated_code += 'std::cout<<stack.back().string;'
@@ -103,7 +103,7 @@ class Generator:
         # end print
 
         # input
-        self.generated_code += 'setFunctionVar(scope,"input",[](){'
+        self.generated_code += 'setFunctionVar(scope,"input",[&](){'
 
         self.generated_code += 'stack.push_back(Data());'
         self.generated_code += 'stack.back().type=0;'
@@ -113,7 +113,7 @@ class Generator:
         # end input
 
         # system
-        self.generated_code += 'setFunctionVar(scope,"system",[](){'
+        self.generated_code += 'setFunctionVar(scope,"system",[&](){'
 
         self.generated_code += 'stack.push_back((Data){1,"",(double)std::system(stack.back().string.c_str()),false});'
 
@@ -121,7 +121,7 @@ class Generator:
         # end system
 
         # stack_size
-        self.generated_code += 'setFunctionVar(scope,"stack_size",[](){'
+        self.generated_code += 'setFunctionVar(scope,"stack_size",[&](){'
 
         self.generated_code += 'stack.push_back((Data){1,"",(double)stack.size(),false});'
 
@@ -129,7 +129,7 @@ class Generator:
         # end stack_size
 
         # duplicate
-        self.generated_code += 'setFunctionVar(scope,"duplicate",[](){'
+        self.generated_code += 'setFunctionVar(scope,"duplicate",[&](){'
 
         self.generated_code += 'int num=stack.back().number;' # temporary var in lambda function scope
         self.generated_code += 'stack.pop_back();'
@@ -142,7 +142,7 @@ class Generator:
         # end duplicate
 
         # num_to_str
-        self.generated_code += 'setFunctionVar(scope,"num_to_str",[](){'
+        self.generated_code += 'setFunctionVar(scope,"num_to_str",[&](){'
 
         self.generated_code += 'temp1=stack.back();'
         self.generated_code += 'stack.pop_back();'
@@ -152,7 +152,7 @@ class Generator:
         # end num_to_str
 
         # str_to_num
-        self.generated_code += 'setFunctionVar(scope,"str_to_num",[](){'
+        self.generated_code += 'setFunctionVar(scope,"str_to_num",[&](){'
 
         self.generated_code += 'temp1=stack.back();'
         self.generated_code += 'stack.pop_back();'
@@ -162,7 +162,7 @@ class Generator:
         # end str_to_num
 
         # type_of
-        self.generated_code += 'setFunctionVar(scope,"type_of",[](){'
+        self.generated_code += 'setFunctionVar(scope,"type_of",[&](){'
 
         self.generated_code += 'if(stack.back().type==0)'
         self.generated_code += 'stack.push_back((Data){0,"str",0,false});'
@@ -175,7 +175,7 @@ class Generator:
         # end type_of
 
         # exit
-        self.generated_code += 'setFunctionVar(scope,"exit",[](){'
+        self.generated_code += 'setFunctionVar(scope,"exit",[&](){'
 
         self.generated_code += 'std::exit((int)stack.back().number);'
 
@@ -252,7 +252,7 @@ class Generator:
     def _visit_function_declaration(self, node):
         if node.kind == TreeNodeKind.FUNCTION_DECLARATION:
             self.generated_code += f'setFunctionVar(scope,"{node.value}",'
-            self.generated_code += '[](){' # TODO: make sure scope is captured correctly
+            self.generated_code += '[&](){' # TODO: make sure scope is captured correctly
             self.generated_code += 'int _scope=scope;'
             self.generated_code += 'int scope=_scope+1;'
             
