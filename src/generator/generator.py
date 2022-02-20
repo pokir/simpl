@@ -88,7 +88,6 @@ class Generator:
         self.generated_code += 'int main(int argc, char **argv){'
 
         # ADD COMMAND LINE ARGUMENTS TO THE STACK
-
         self.generated_code += 'for(int i=0;i<argc;++i){'
         self.generated_code += 'stack.push_back(Data());'
         self.generated_code += 'stack.back().type=0;'
@@ -98,106 +97,10 @@ class Generator:
         self.generated_code += 'stack.push_back(Data());'
         self.generated_code += 'stack.back().type=1;'
         self.generated_code += 'stack.back().number=argc;'
-
         # END COMMAND LINE ARGUMENTS
 
         # STD FUNCTIONS WRITTEN IN C++
-
-        # print
-        self.generated_code += 'setFunctionVar(scope,"print",[&](){'
-
-        self.generated_code += 'if(stack.back().type==0)'
-        self.generated_code += 'std::cout<<stack.back().string;'
-        self.generated_code += 'else if(stack.back().type==1)'
-        self.generated_code += 'std::cout<<stack.back().number;'
-        self.generated_code += 'else if(stack.back().type==2)'
-        self.generated_code += 'std::cout<<(stack.back().boolean?"T":"F");'
-        #self.generated_code += '/*stack.pop_back();*/'
-
-        self.generated_code += '});'
-        # end print
-
-        # input
-        self.generated_code += 'setFunctionVar(scope,"input",[&](){'
-
-        self.generated_code += 'stack.push_back(Data());'
-        self.generated_code += 'stack.back().type=0;'
-        self.generated_code += 'std::cin>>stack.back().string;'
-
-        self.generated_code += '});'
-        # end input
-
-        # system
-        self.generated_code += 'setFunctionVar(scope,"system",[&](){'
-
-        self.generated_code += 'stack.push_back((Data){1,"",(double)std::system(stack.back().string.c_str()),false});'
-
-        self.generated_code += '});'
-        # end system
-
-        # stack_size
-        self.generated_code += 'setFunctionVar(scope,"stack_size",[&](){'
-
-        self.generated_code += 'stack.push_back((Data){1,"",(double)stack.size(),false});'
-
-        self.generated_code += '});'
-        # end stack_size
-
-        # duplicate
-        self.generated_code += 'setFunctionVar(scope,"duplicate",[&](){'
-
-        self.generated_code += 'int num=stack.back().number;' # temporary var in lambda function scope
-        self.generated_code += 'stack.pop_back();'
-        self.generated_code += 'int size=stack.size();' # temporary var in lambda function scope
-        self.generated_code += 'for(int i=0;i<num;++i){'
-        self.generated_code += 'stack.push_back(stack.at(size-num+i));'
-        self.generated_code += '}'
-
-        self.generated_code += '});'
-        # end duplicate
-
-        # num_to_str
-        self.generated_code += 'setFunctionVar(scope,"num_to_str",[&](){'
-
-        self.generated_code += 'temp1=stack.back();'
-        self.generated_code += 'stack.pop_back();'
-        self.generated_code += 'stack.push_back((Data){0,std::to_string(temp1.number),0,false});'
-
-        self.generated_code += '});'
-        # end num_to_str
-
-        # str_to_num
-        self.generated_code += 'setFunctionVar(scope,"str_to_num",[&](){'
-
-        self.generated_code += 'temp1=stack.back();'
-        self.generated_code += 'stack.pop_back();'
-        self.generated_code += 'stack.push_back((Data){1,"",std::stod(temp1.string),false});'
-
-        self.generated_code += '});'
-        # end str_to_num
-
-        # type_of
-        self.generated_code += 'setFunctionVar(scope,"type_of",[&](){'
-
-        self.generated_code += 'if(stack.back().type==0)'
-        self.generated_code += 'stack.push_back((Data){0,"str",0,false});'
-        self.generated_code += 'else if(stack.back().type==1)'
-        self.generated_code += 'stack.push_back((Data){0,"num",0,false});'
-        self.generated_code += 'else if(stack.back().type==2)'
-        self.generated_code += 'stack.push_back((Data){0,"bool",0,false});'
-
-        self.generated_code += '});'
-        # end type_of
-
-        # exit
-        self.generated_code += 'setFunctionVar(scope,"exit",[&](){'
-
-        self.generated_code += 'std::exit((int)stack.back().number);'
-
-        self.generated_code += '});'
-        # end exit
-
-        # END OF STD FUNCTIONS
+        self.generated_code += '\n#include "src/std/cpp/std.cpp"\n'
 
         self._visit(self.tree)
 

@@ -20,7 +20,7 @@ def main():
     filename = filepath.split('/')[-1]
 
     # Load standard library
-    with open('./std/std.simpl', 'r') as f:
+    with open('./src/std/simpl/std.simpl', 'r') as f:
         source = f.read()
 
     # Load file
