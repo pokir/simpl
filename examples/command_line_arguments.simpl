@@ -1,0 +1,20 @@
+# The command line arguments are pushed on the stack automatically.
+# The argument count is at the top of the stack.
+
+@ counter
+
+'Number of arguments: ' . print! @_
+counter . println! @_
+
+'Arguments:' . print! @_
+& {
+  counter . 0 . == ? {
+    @_ ^
+  } @_
+  
+  ' ' . print! @_ print! @_
+
+  counter . 1 . - @ counter
+}
+
+'\n' . print! @_

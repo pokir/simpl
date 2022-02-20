@@ -56,6 +56,7 @@ class Generator:
         self.generated_code += 'return false;'
         self.generated_code += '}'
 
+        # TODO: make it so it returns something when there is no variable
         self.generated_code += 'Variable& getVar(int scope,std::string name){'
         self.generated_code += 'for(int i=0;i<=scope;++i){'
         self.generated_code += 'auto found=variables.at(i).find(name);'
@@ -84,7 +85,21 @@ class Generator:
         self.generated_code += 'variables.pop_back();'
         self.generated_code += '}'
 
-        self.generated_code += 'int main(){'
+        self.generated_code += 'int main(int argc, char **argv){'
+
+        # ADD COMMAND LINE ARGUMENTS TO THE STACK
+
+        self.generated_code += 'for(int i=0;i<argc;++i){'
+        self.generated_code += 'stack.push_back(Data());'
+        self.generated_code += 'stack.back().type=0;'
+        self.generated_code += 'stack.back().string=argv[argc-i-1];'
+        self.generated_code += '}'
+        # add the argument count
+        self.generated_code += 'stack.push_back(Data());'
+        self.generated_code += 'stack.back().type=1;'
+        self.generated_code += 'stack.back().number=argc;'
+
+        # END COMMAND LINE ARGUMENTS
 
         # STD FUNCTIONS WRITTEN IN C++
 
