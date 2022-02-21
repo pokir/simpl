@@ -19,40 +19,45 @@ def main():
     filepath = sys.argv[1]
     filename = filepath.split('/')[-1]
 
-    # Load standard library
-    with open('./src/std/simpl/std.simpl', 'r') as f:
-        source = f.read()
+    files = ['./src/std/simpl/std.simpl', filepath]
 
-    # Load file
-    with open(filepath, 'r') as f:
-        source += f.read()
+    trees = []
 
-    lxr = Lexer(source)
-    lxr.lex()
-    print()
-    print('Lexer output:')
-    print(lxr.tokens)
-    print()
+    for file in files:
+        with open(file, 'r') as f:
+            source = f.read()
 
-    prsr = Parser(source, lxr.tokens)
-    prsr.parse()
+        lxr = Lexer(file, source)
+        lxr.lex()
+        prsr = Parser(file, source, lxr.tokens)
+        prsr.parse()
+        trees.append(prsr.tree)
 
-    print('Parser output:')
-    print(prsr.tree)
-    print()
+    combined_tree = trees[0]
+    combined_tree.start = None
+    combined_tree.end = None
+    for tree in trees[1:]:
+        combined_tree.children += tree.children
 
-    gnrtr = Generator(prsr.tree)
+    gnrtr = Generator(combined_tree)
     gnrtr.generate()
     
-    print('Generator output:')
-    print(gnrtr.generated_code)
-    print()
+    if '-v' in sys.argv:
+        print('Abstract syntax tree:')
+        print(combined_tree)
+        print()
+
+        print('Generator output:')
+        print(gnrtr.generated_code)
+        print()
 
     #with open(f'{filepath}.cpp', 'w') as f:
     #    f.write(gnrtr.generated_code)
 
-    if not os.path.isdir('build'): os.mkdir('build')
+    if not os.path.isdir('build'):
+        os.mkdir('build')
     os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++1z -o build/{"".join(filename.split(".")[:-1])} -')
+
 
     # For the future when it will show all errors:
     #show_errors()

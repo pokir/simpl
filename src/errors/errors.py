@@ -59,8 +59,8 @@ def display_error_in_code(source, start, end):
     return string
 
 
-def throw_error(source, error_kind, start, end):
-    error = error_kind.value(source, start, end)
+def throw_error(filename, source, error_kind, start, end):
+    error = error_kind.value(filename, source, start, end)
     all_errors.append(error) # for the future when it will show all errors
     print(error.show())
     print()
@@ -77,54 +77,56 @@ def throw_error(source, error_kind, start, end):
 
 
 class Error:
-    def __init__(self, source, start, end, details):
+    def __init__(self, filename, source, start, end, details):
+        self.filename = filename
         self.source = source # the entire code in the file, so that it can be displayed
         self.start = start
         self.end = end
         self.details = details
 
     def show(self):
-        result = f'{self.__class__.__name__}: {self.details}\n'
-        result += f'Line {self.start[0]}, column {self.start[1]}'
+        result = f'{colorama.Style.BRIGHT}{self.filename}:{self.start[0]}:{self.start[1]}: '
+        result += f'{colorama.Fore.RED}{self.__class__.__name__}{colorama.Style.RESET_ALL}{colorama.Style.BRIGHT}: {self.details}{colorama.Style.RESET_ALL}\n'
+        #result += f'Line {self.start[0]}, column {self.start[1]}'
 
         result += f'\n\n{display_error_in_code(self.source, self.start, self.end)}'
         return result
 
 
 class InvalidSyntaxError(Error):
-    def __init__(self, source, start, end):
-        super().__init__(source, start, end, 'invalid syntax')
+    def __init__(self, filename, source, start, end):
+        super().__init__(filename, source, start, end, 'invalid syntax')
 
 
 class IllegalCharacterError(Error):
-    def __init__(self, source, start, end):
-        super().__init__(source, start, end, 'illegal character')
+    def __init__(self, filename, source, start, end):
+        super().__init__(filename, source, start, end, 'illegal character')
 
 
 class UnterminatedStringLiteralError(Error):
-    def __init__(self, source, start, end):
-        super().__init__(source, start, end, 'unterminated string literal')
+    def __init__(self, filename, source, start, end):
+        super().__init__(filename, source, start, end, 'unterminated string literal')
 
 
 class InvalidNumberLiteralError(Error):
-    def __init__(self, source, start, end):
+    def __init__(self, filename, source, start, end):
         # TODO: make it show where the end is
-        super().__init__(source, start, end, 'invalid number literal')
+        super().__init__(filename, source, start, end, 'invalid number literal')
 
 
 class ReturnOutsideFunctionError(Error):
-    def __init__(self, source, start, end):
-        super().__init__(source, start, end, 'return outside function')
+    def __init__(self, filename, source, start, end):
+        super().__init__(filename, source, start, end, 'return outside function')
 
 
 class ContinueOutsideLoopError(Error):
-    def __init__(self, source, start, end):
-        super().__init__(source, start, end, 'continue outside loop')
+    def __init__(self, filename, source, start, end):
+        super().__init__(filename, source, start, end, 'continue outside loop')
 
 
 class BreakOutsideLoopError(Error):
-    def __init__(self, source, start, end):
-        super().__init__(source, start, end, 'break outside loop')
+    def __init__(self, filename, source, start, end):
+        super().__init__(filename, source, start, end, 'break outside loop')
 
 
 # TODO: put the enums in a different file

@@ -12,8 +12,9 @@ ErrorKind = errors.ErrorKind
 
 
 class Lexer:
-    def __init__(self, source):
+    def __init__(self, filename, source):
         self.source = source
+        self.filename = filename
         self.position = 0
         self.tokens = []
     
@@ -79,7 +80,7 @@ class Lexer:
                                 self.position += 1
                                 continue
                             else:
-                                throw_error(self.source, ErrorKind.INVALID_NUMBER_LITERAL, start, self.get_line_column())
+                                throw_error(self.filename, self.source, ErrorKind.INVALID_NUMBER_LITERAL, start, self.get_line_column())
 
                         buffer += self.char()
                         self.position += 1
@@ -106,7 +107,7 @@ class Lexer:
                     self.tokens.append(Token(TokenKind.EQUALS, '==', self.get_line_column(), self.get_line_column(2)))
                     self.position += 2
                 else:
-                    throw_error(self.source, ErrorKind.ILLEGAL_CHARACTER, self.get_line_column(), self.get_line_column(1))
+                    throw_error(self.filename, self.source, ErrorKind.ILLEGAL_CHARACTER, self.get_line_column(), self.get_line_column(1))
 
             elif self.char() == '!':
                 if self.next_char() == '=':
@@ -182,7 +183,7 @@ class Lexer:
                             buffer += '\\' + self.char()
 
                     elif self.char() is None: # if it reaches end of file
-                        throw_error(self.source, ErrorKind.UNTERMINATED_STRING_LITERAL, start, self.get_line_column())
+                        throw_error(self.filename, self.source, ErrorKind.UNTERMINATED_STRING_LITERAL, start, self.get_line_column())
 
                     else:
                         buffer += self.char()
@@ -210,7 +211,7 @@ class Lexer:
                             self.position += 1
                             continue
                         else:
-                            throw_error(self.source, ErrorKind.INVALID_NUMBER_LITERAL, start, self.get_line_column())
+                            throw_error(self.filename, self.source, ErrorKind.INVALID_NUMBER_LITERAL, start, self.get_line_column())
 
                     buffer += self.char()
                     self.position += 1
@@ -229,6 +230,6 @@ class Lexer:
                 self.tokens.append(Token(TokenKind.IDENTIFIER, buffer, start, self.get_line_column()))
 
             else:
-                throw_error(self.source, ErrorKind.ILLEGAL_CHARACTER, self.get_line_column(), self.get_line_column(1))
+                throw_error(self.filename, self.source, ErrorKind.ILLEGAL_CHARACTER, self.get_line_column(), self.get_line_column(1))
 
         self.tokens.append(Token(TokenKind.END_OF_FILE, None, self.get_line_column(), self.get_line_column(1)))

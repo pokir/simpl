@@ -12,7 +12,8 @@ ErrorKind = errors.ErrorKind
 
 
 class Parser:
-    def __init__(self, source, tokens):
+    def __init__(self, filename, source, tokens):
+        self.filename = filename
         self.source = source # the raw code so that it can show errors
         self.tokens = tokens
         self.position = 0
@@ -39,7 +40,7 @@ class Parser:
         while self.token().kind is not TokenKind.END_OF_FILE:
             statement = self._statement()
             if statement is None: # position has not incremented is it is None
-                throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end)
+                throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end)
 
             self.tree.add_child(statement)
 
@@ -226,11 +227,11 @@ class Parser:
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
                 statement = self._statement(in_loop=in_loop, in_function=in_function)
                 if statement is None: # position has not incremented if it is None
-                    throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
+                    throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
                 node.add_child(statement)
 
                 if self.token().kind == TokenKind.END_OF_FILE:
-                    throw_error(self.source, ErrorKind.INVALID_SYNTAX, start_token, self.token().start) # unmatched curly braces
+                    throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, start_token, self.token().start) # unmatched curly braces
 
             self.position += 1 # skip the right curly brace
             node.end = self.relative_token(-1).end # position of the last curly brace
@@ -248,11 +249,11 @@ class Parser:
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
                 statement = self._statement(in_loop=in_loop, in_function=in_function)
                 if statement is None: # position has not incremented if it is None
-                    throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
+                    throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
                 node.add_child(statement)
 
                 if self.token().kind == TokenKind.END_OF_FILE:
-                    throw_error(self.source, ErrorKind.INVALID_SYNTAX, start_token, self.token().start) # unmatched curly braces
+                    throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, start_token, self.token().start) # unmatched curly braces
 
             self.position += 1 # skip the right curly brace
             node.end = self.relative_token(-1).end # position of the last curly brace
@@ -270,11 +271,11 @@ class Parser:
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
                 statement = self._statement(in_loop=True, in_function=in_function)
                 if statement is None: # position has not incremented if it is None
-                    throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
+                    throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
                 node.add_child(statement)
 
                 if self.token().kind == TokenKind.END_OF_FILE:
-                    throw_error(self.source, ErrorKind.INVALID_SYNTAX, start_token, self.token().start) # unmatched curly braces
+                    throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, start_token, self.token().start) # unmatched curly braces
 
             self.position += 1 # skip the right curly brace
             node.end = self.relative_token(-1).end # position of the last curly brace
@@ -284,7 +285,7 @@ class Parser:
         is_continue = self.token().kind == TokenKind.CONTINUE
         if not in_loop:
             if is_continue:
-                throw_error(self.source, ErrorKind.CONTINUE_OUTSIDE_LOOP_ERROR, self.token().start, self.token().end)
+                throw_error(self.filename, self.source, ErrorKind.CONTINUE_OUTSIDE_LOOP_ERROR, self.token().start, self.token().end)
             return
         if is_continue:
             self.position += 1
@@ -296,7 +297,7 @@ class Parser:
         is_break = self.token().kind == TokenKind.BREAK
         if not in_loop:
             if is_break:
-                throw_error(self.source, ErrorKind.BREAK_OUTSIDE_LOOP_ERROR, self.token().start, self.token().end)
+                throw_error(self.filename, self.source, ErrorKind.BREAK_OUTSIDE_LOOP_ERROR, self.token().start, self.token().end)
             return
         if is_break:
             self.position += 1
@@ -318,11 +319,11 @@ class Parser:
             while self.token().kind != TokenKind.RIGHT_CURLY_BRACE:
                 statement = self._statement(in_loop=False, in_function=True)
                 if statement is None: # position has not incremented if it is None
-                    throw_error(self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
+                    throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, self.token().start, self.token().end) # not a valid statement
                 node.add_child(statement)
 
                 if self.token().kind == TokenKind.END_OF_FILE:
-                    throw_error(self.source, ErrorKind.INVALID_SYNTAX, start_token, self.token().start) # unmatched curly braces
+                    throw_error(self.filename, self.source, ErrorKind.INVALID_SYNTAX, start_token, self.token().start) # unmatched curly braces
 
             self.position += 1 # skip the right curly brace
             node.end = self.relative_token(-1).end # position of the last curly brace
@@ -332,7 +333,7 @@ class Parser:
         is_return = self.token().kind == TokenKind.RETURN
         if not in_function:
             if is_return:
-                throw_error(self.source, ErrorKind.RETURN_OUTSIDE_FUNCTION_ERROR, self.token().start, self.token().end)
+                throw_error(self.filename, self.source, ErrorKind.RETURN_OUTSIDE_FUNCTION_ERROR, self.token().start, self.token().end)
             return
         if is_return:
             self.position += 1
