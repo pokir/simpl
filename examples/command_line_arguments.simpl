@@ -1,6 +1,8 @@
 # The command line arguments are pushed on the stack automatically.
 # The argument count is at the top of the stack.
 
+`std`
+
 @ counter
 
 'Number of arguments: ' . print! @_

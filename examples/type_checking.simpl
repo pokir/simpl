@@ -1,5 +1,7 @@
 # Uses type_of, is_str, is_num, and is_bool functions
 
+`std`
+
 4 . type_of! println!
 'foo' . type_of! println!
 F . type_of! println!
