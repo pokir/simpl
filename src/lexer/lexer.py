@@ -195,6 +195,20 @@ class Lexer:
 
                 self.position += 1
 
+            elif self.char() == '`':
+                start = self.get_line_column()
+                buffer = self.char()
+                self.position += 1
+
+                while self.char() != '`':
+                    buffer += self.char()
+                    self.position += 1
+
+                buffer += self.char()
+                self.tokens.append(Token(TokenKind.IMPORT, buffer, start, self.get_line_column(1)))
+
+                self.position += 1
+
             elif self.char().isnumeric():
                 start = self.get_line_column()
                 buffer = self.char()

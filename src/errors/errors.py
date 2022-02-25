@@ -129,6 +129,11 @@ class BreakOutsideLoopError(Error):
         super().__init__(filename, source, start, end, 'break outside loop')
 
 
+class ImportFileError(Error):
+    def __init__(self, filename, source, start, end):
+        super().__init__(filename, source, start, end, 'file not found')
+
+
 # TODO: put the enums in a different file
 class ErrorKind(Enum):
     INVALID_SYNTAX = InvalidSyntaxError
@@ -139,3 +144,5 @@ class ErrorKind(Enum):
     RETURN_OUTSIDE_FUNCTION_ERROR = ReturnOutsideFunctionError
     CONTINUE_OUTSIDE_LOOP_ERROR = ContinueOutsideLoopError
     BREAK_OUTSIDE_LOOP_ERROR = BreakOutsideLoopError
+
+    IMPORT_FILE_ERROR = ImportFileError

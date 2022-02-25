@@ -19,7 +19,8 @@ def main():
     filepath = sys.argv[1]
     filename = filepath.split('/')[-1]
 
-    files = ['./src/std/simpl/std.simpl', filepath]
+    #files = ['./src/std/simpl/std.simpl', filepath]
+    files = [filepath]
 
     trees = []
 

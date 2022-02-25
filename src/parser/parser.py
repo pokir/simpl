@@ -1,9 +1,13 @@
+import os
+
+from errors import errors 
+from lexer import lexer
+from lexer import token_kinds_
 from parser import tree_node_kinds_
 from parser import tree_node_
-from lexer import token_kinds_
-from errors import errors 
 
 
+Lexer = lexer.Lexer
 TokenKind = token_kinds_.TokenKind
 TreeNode = tree_node_.TreeNode
 TreeNodeKind = tree_node_kinds_.TreeNodeKind
@@ -111,7 +115,9 @@ class Parser:
                \
                or self._function_declaration() \
                or self._return_statement(in_function) \
-               or self._function_call()
+               or self._function_call() \
+               \
+               or self._import_statement()
 
     def _push_statement(self):
         literal = self._literal()
@@ -350,3 +356,29 @@ class Parser:
                             self.relative_token(-1).end,
                             raw=self.relative_token(-2).literal,
                             value=self.relative_token(-2).literal)
+
+    def _import_statement(self):
+        # TODO: add file not found error
+        if self.token().kind == TokenKind.IMPORT:
+            filename = os.path.join(os.path.dirname(self.filename), self.token().literal[1:-1] + '.simpl')
+
+            if not os.path.isfile(filename):
+                # find it in the standard library
+                filename = os.path.join('src/std/simpl', self.token().literal[1:-1] + '.simpl')
+
+            # if it still isn't found in the standard library, error
+            if not os.path.isfile(filename):
+                throw_error(self.filename, self.source, ErrorKind.IMPORT_FILE_ERROR, self.token().start, self.token().end)
+
+            self.position += 1
+
+            # lex and parse the imported file
+            with open(filename, 'r') as f:
+                source = f.read()
+
+            lxr = Lexer(filename, source)
+            lxr.lex()
+            prsr = Parser(filename, source, lxr.tokens)
+            prsr.parse()
+
+            return prsr.tree.children

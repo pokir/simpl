@@ -10,8 +10,12 @@ class TreeNode:
         self.raw = raw
         self.children = children
 
-    def add_child(self, child):
-        self.children.append(child)
+    def add_child(self, children):
+        if hasattr(children, '__iter__'):
+            for child in children:
+                self.children.append(child)
+        else:
+            self.children.append(children) # only one child
 
     def __repr__(self):
         string = f'{self.kind}'

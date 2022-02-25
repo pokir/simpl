@@ -36,4 +36,6 @@ class TokenKind(Enum):
     CALL = auto()
     RETURN = auto()
 
+    IMPORT = auto()
+
     END_OF_FILE = auto()
