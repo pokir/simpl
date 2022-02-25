@@ -23,6 +23,7 @@ def main():
 
     trees = []
 
+    # Lex and parse all files
     for file in files:
         with open(file, 'r') as f:
             source = f.read()
@@ -33,12 +34,14 @@ def main():
         prsr.parse()
         trees.append(prsr.tree)
 
+    # Combine the abstract syntax trees
     combined_tree = trees[0]
     combined_tree.start = None
     combined_tree.end = None
     for tree in trees[1:]:
         combined_tree.children += tree.children
 
+    # Generate the code from the combined abstract syntax tree
     gnrtr = Generator(combined_tree)
     gnrtr.generate()
     
@@ -57,7 +60,6 @@ def main():
     if not os.path.isdir('build'):
         os.mkdir('build')
     os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++1z -o build/{"".join(filename.split(".")[:-1])} -')
-
 
     # For the future when it will show all errors:
     #show_errors()
