@@ -2,18 +2,24 @@
 
 `std`
 
+# Getting the type
 4 . type_of! println!
 'foo' . type_of! println!
 F . type_of! println!
+print . type_of! println!
 
 '\n' . print!
 
+# Checking the type
 3 . is_num! println!
 'bar' . is_str! println!
 T . is_bool! println!
+print . is_func! println!
 
 '\n' . print!
 
+# Checking the type (but has the wrong type)
 'foobar' . is_num! println!
 F . is_str! println!
 2 . is_bool! println!
+6 . is_func! println!
