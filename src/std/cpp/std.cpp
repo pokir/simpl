@@ -52,6 +52,18 @@ setFunctionVar(scope, "str_to_bool", [&] () {
   stack.push_back((Data) {2, "", 0, temp1.string == "T"});
 });
 
+setFunctionVar(scope, "bool_to_num", [&] () {
+  temp1 = stack.back();
+  stack.pop_back();
+  stack.push_back((Data) {1, "", temp1.boolean ? 1.0 : 0.0, false});
+});
+
+setFunctionVar(scope, "num_to_bool", [&] () {
+  temp1 = stack.back();
+  stack.pop_back();
+  stack.push_back((Data) {2, "", 0, temp1.number != 0});
+});
+
 setFunctionVar(scope, "type_of", [&] () {
   if(stack.back().type == 0) stack.push_back((Data) {0, "str", 0, false});
   else if(stack.back().type == 1) stack.push_back((Data) {0, "num", 0, false});

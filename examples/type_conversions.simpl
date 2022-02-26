@@ -6,3 +6,5 @@
 "3" . str_to_num! print! ': ' . print! @_ type_of! println!
 F . bool_to_str! print! ': ' . print! @_ type_of! println!
 "T" . str_to_bool! print! ': ' . print! @_ type_of! println!
+T . bool_to_num! print! ': ' . print! @_ type_of! println!
+0 . num_to_bool! print! ': ' . print! @_ type_of! println!
