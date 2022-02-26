@@ -40,6 +40,18 @@ setFunctionVar(scope, "str_to_num", [&] () {
   stack.push_back((Data) {1, "", std::stod(temp1.string), false});
 });
 
+setFunctionVar(scope, "bool_to_str", [&] () {
+  temp1 = stack.back();
+  stack.pop_back();
+  stack.push_back((Data) {0, temp1.boolean ? "T" : "F", 0, false});
+});
+
+setFunctionVar(scope, "str_to_bool", [&] () {
+  temp1 = stack.back();
+  stack.pop_back();
+  stack.push_back((Data) {2, "", 0, temp1.string == "T"});
+});
+
 setFunctionVar(scope, "type_of", [&] () {
   if(stack.back().type == 0) stack.push_back((Data) {0, "str", 0, false});
   else if(stack.back().type == 1) stack.push_back((Data) {0, "num", 0, false});
