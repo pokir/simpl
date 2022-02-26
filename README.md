@@ -15,9 +15,9 @@ https://astexplorer.net/
 - [x] Nestable statements
 - [x] Flexible spacing
 - [x] Standard library
-- [ ] Errors
+- [x] Errors
   - [x] Syntax errors
-  - [ ] Run time errors
+  - [x] Run time errors
 - [x] Importing files
 
 ## Syntax
