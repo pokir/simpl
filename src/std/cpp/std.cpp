@@ -1,3 +1,10 @@
+// This file gets included in every simpl program
+
+setFunctionVar(scope, "panic", [&] () {
+  std::cout << "Program panicked: " << stack.back().string << std::endl;
+  std::exit(1);
+});
+
 setFunctionVar(scope, "print", [&] () {
   if (stack.back().type == 0) std::cout << stack.back().string;
   else if(stack.back().type == 1) std::cout << stack.back().number;
