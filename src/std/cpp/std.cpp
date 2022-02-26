@@ -2,6 +2,7 @@ setFunctionVar(scope, "print", [&] () {
   if (stack.back().type == 0) std::cout << stack.back().string;
   else if(stack.back().type == 1) std::cout << stack.back().number;
   else if(stack.back().type == 2) std::cout << (stack.back().boolean ? "T" : "F");
+  else if(stack.back().type == 3) std::cout << "function";
 });
 
 setFunctionVar(scope, "input", [&] () {
