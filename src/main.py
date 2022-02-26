@@ -17,7 +17,7 @@ Generator = generator.Generator
 
 def main():
     filepath = sys.argv[1]
-    filename = filepath.split('/')[-1]
+    filename = ''.join(filepath.split('/')[-1].split('.')[:-1])
 
     #files = ['./src/std/simpl/std.simpl', filepath]
     files = [filepath]
@@ -55,12 +55,13 @@ def main():
         print(gnrtr.generated_code)
         print()
 
-    #with open(f'{filepath}.cpp', 'w') as f:
-    #    f.write(gnrtr.generated_code)
-
     if not os.path.isdir('build'):
         os.mkdir('build')
-    os.system(f'echo {repr(gnrtr.generated_code)} | g++ -x c++ -std=c++1z -o build/{"".join(filename.split(".")[:-1])} -')
+
+    with open(f'build/{filename}.cpp', 'w') as f:
+        f.write(gnrtr.generated_code)
+
+    os.system(f'g++ -x c++ -std=c++1z -o build/{filename} build/{filename}.cpp')
 
     # For the future when it will show all errors:
     #show_errors()

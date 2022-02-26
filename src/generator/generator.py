@@ -100,7 +100,9 @@ class Generator:
         # END COMMAND LINE ARGUMENTS
 
         # STD FUNCTIONS WRITTEN IN C++
-        self.generated_code += '\n#include "src/std/cpp/std.cpp"\n'
+        with open('src/std/cpp/std.cpp', 'r') as f:
+            self.generated_code += f.read()
+        #self.generated_code += '\n#include "src/std/cpp/std.cpp"\n'
 
         self._visit(self.tree)
 

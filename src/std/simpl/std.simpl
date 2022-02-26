@@ -32,6 +32,20 @@ pop {
   # Pops n number of items from the stack
   @ counter
 
+  counter . stack_size! > ? {
+    @_
+    'tried to pop ' .
+    counter . num_to_str!
+    +
+    ' items from the stack, but the stack only has ' .
+    + 
+    stack_size! num_to_str! 
+    +
+    ' items' .
+    +
+    panic!
+  } @_
+
   & {
     counter .  0 . <= ? {
       @_         # remove the boolean result
@@ -52,6 +66,7 @@ flip {
 
 
 # TYPES
+# TODO: add panics for these? (type_of already has a panic in std/cpp/std.cpp)
 
 is_str {
   type_of! 'str' . ==
@@ -74,6 +89,12 @@ is_func {
 # MATH
 
 floor {
+  is_num! F . == ? {
+    @_
+    "can't run floor because the argument is not a number" .
+    panic!
+  } @_
+
   1 . duplicate!
   1 . %
   -
@@ -81,12 +102,24 @@ floor {
 
 
 ceil {
+  is_num! F . == ? {
+    @_
+    "can't run ceil because the argument is not a number" .
+    panic!
+  } @_
+
   floor!
   1 . +
 }
 
 
 round {
+  is_num! F . == ? {
+    @_
+    "can't run round because the argument is not a number" .
+    panic!
+  } @_
+
   0.5 . +
   floor!
 }
@@ -96,6 +129,20 @@ pow {
   # TODO: allow fractional exponents
   @ exponent
   @ base
+
+  exponent . is_num! F . == ? {
+    @_
+    "can't run pow because the exponent is not a number" .
+    panic!
+  } @_
+  @_ # remove the exponent
+
+  base . is_num! F . == ? {
+    @_
+    "can't run pow because the base is not a number" .
+    panic!
+  } @_
+  @_ # remove the base
 
   exponent . @ counter
 
