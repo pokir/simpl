@@ -19,6 +19,7 @@ https://astexplorer.net/
   - [x] Syntax errors
   - [x] Run time errors
 - [x] Importing files
+- [ ] Namespaces
 
 ## Syntax
 
@@ -91,7 +92,7 @@ a .        # push a variable called a
 ```
 # Run the code in the curly braces if the top of the stack is T
 # (pops the top)
-# Otherwise run the code in the second curly brace
+# Otherwise run the code in the second curly brace (note that it is not exactly an ELSE, but an IF NOT because it checks the top of the stack again; if the top of the stack changes, the second check might be wrong)
 ? {
   
 } : {
