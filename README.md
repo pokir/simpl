@@ -2,8 +2,6 @@
 
 A small stack based programming language originally inspired by [porth](https://gitlab.com/tsoding/porth).
 
-This is just a small language to learn how compilers work.
-
 (WORK IN PROGRESS)
 
 ## Notes
@@ -20,6 +18,7 @@ https://astexplorer.net/
 - [ ] Errors
   - [x] Syntax errors
   - [ ] Run time errors
+- [x] Importing files
 
 ## Syntax
 
