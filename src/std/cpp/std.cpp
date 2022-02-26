@@ -43,6 +43,7 @@ setFunctionVar(scope, "type_of", [&] () {
   if(stack.back().type == 0) stack.push_back((Data) {0, "str", 0, false});
   else if(stack.back().type == 1) stack.push_back((Data) {0, "num", 0, false});
   else if(stack.back().type == 2) stack.push_back((Data) {0, "bool", 0, false});
+  else if(stack.back().type == 3) stack.push_back((Data) {0, "function", 0, false});
 });
 
 setFunctionVar(scope, "exit", [&] () {
