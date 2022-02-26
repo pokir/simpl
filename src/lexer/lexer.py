@@ -175,9 +175,10 @@ class Lexer:
                         self.position += 1
                         
                         if self.char() in ['n', 't', '\\']:
+                            # TODO: make this simpler
                             buffer += ['\n', '\t', '\\'] \
                                 [['n', 't', '\\'].index(self.char())]
-                        elif self.char() == quote:
+                        elif self.char() == buffer[0]:
                             buffer += self.char()
                         else:
                             buffer += '\\' + self.char()
