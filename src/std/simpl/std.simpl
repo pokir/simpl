@@ -67,6 +67,9 @@ is_bool {
   type_of! 'bool' . ==
 }
 
+is_func {
+  type_of! 'func' . ==
+}
 
 # MATH
 
