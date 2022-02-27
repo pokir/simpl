@@ -194,6 +194,22 @@ setFunctionVar(scope, "type_of", [&] () {
   else if(stack.back().type == 3) stack.push_back((Data) {0, "func", 0, false});
 });
 
+setFunctionVar(scope, "length", [&] () {
+  if (stack.size() <= 0) {
+    stack.push_back(Data());
+    stack.back().type = 0;
+    stack.back().string = "can't run length because the stack is empty";
+    getVar(scope, "panic").data.function();
+  } else if (stack.back().type != 0) {
+    stack.push_back(Data());
+    stack.back().type = 0;
+    stack.back().string = "can't run length because the argument is not a string";
+    getVar(scope, "panic").data.function();
+  }
+
+  stack.push_back((Data) {1, "", (double) stack.back().string.size(), false});
+});
+
 setFunctionVar(scope, "exit", [&] () {
   if (stack.size() <= 0) {
     stack.push_back(Data());

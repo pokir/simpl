@@ -1,0 +1,4 @@
+# This prints the length of the string
+
+`std`
+'i am 20 letters long' . length! println!
