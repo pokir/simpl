@@ -360,13 +360,14 @@ class Parser:
     def _import_statement(self):
         # TODO: add file not found error
         if self.token().kind == TokenKind.IMPORT:
-            filename = os.path.join(os.path.dirname(self.filename), self.token().literal[1:-1] + '.simpl')
+            # find it in the standard library
+            filename = os.path.join('src/std/simpl', self.token().literal[1:-1] + '.simpl')
 
             if not os.path.isfile(filename):
-                # find it in the standard library
-                filename = os.path.join('src/std/simpl', self.token().literal[1:-1] + '.simpl')
+                # find it in the file's directory
+                filename = os.path.join(os.path.dirname(self.filename), self.token().literal[1:-1] + '.simpl')
 
-            # if it still isn't found in the standard library, error
+            # if it still isn't found, error
             if not os.path.isfile(filename):
                 throw_error(self.filename, self.source, ErrorKind.IMPORT_FILE_ERROR, self.token().start, self.token().end)
 
