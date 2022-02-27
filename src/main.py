@@ -61,7 +61,10 @@ def main():
     with open(f'build/{filename}.cpp', 'w') as f:
         f.write(gnrtr.generated_code)
 
-    os.system(f'g++ -x c++ -std=c++1z -o build/{filename} build/{filename}.cpp')
+    if '-S' in sys.argv:
+        os.system(f'g++ -x c++ -std=c++1z -o build/{filename}.s -S build/{filename}.cpp')
+    else:
+        os.system(f'g++ -x c++ -std=c++1z -o build/{filename} build/{filename}.cpp')
 
     # For the future when it will show all errors:
     #show_errors()
