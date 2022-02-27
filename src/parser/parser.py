@@ -361,7 +361,7 @@ class Parser:
         # TODO: add file not found error
         if self.token().kind == TokenKind.IMPORT:
             # find it in the standard library
-            filename = os.path.join('src/std/simpl', self.token().literal[1:-1] + '.simpl')
+            filename = os.path.join('src/lib/simpl', self.token().literal[1:-1] + '.simpl')
 
             if not os.path.isfile(filename):
                 # find it in the file's directory
