@@ -1,0 +1,12 @@
+# These are some string manipulation functions
+
+`std`
+`string`
+
+'Enter a string to reverse: ' . print!
+input! reverse! println!
+
+'Helloo' . str_pop! println!
+
+'The third letter of "hello" is ' . print!
+'hello' . 3 . char_at! println!

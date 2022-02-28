@@ -1,0 +1,6 @@
+`std`
+`string`
+
+'hilloo' . str_pop! reverse! println!
+
+'test' . 3 . char_at! println!

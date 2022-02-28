@@ -210,6 +210,40 @@ setFunctionVar(scope, "length", [&] () {
   stack.push_back((Data) {1, "", (double) stack.back().string.size(), false});
 });
 
+setFunctionVar(scope, "str_pop", [&] () {
+  if (stack.size() <= 0) {
+    stack.push_back(Data());
+    stack.back().type = 0;
+    stack.back().string = "can't run str_pop because the stack is empty";
+    getVar(scope, "panic").data.function();
+  } else if (stack.back().type != 0) {
+    stack.push_back(Data());
+    stack.back().type = 0;
+    stack.back().string = "can't run str_pop because the argument is not a string";
+    getVar(scope, "panic").data.function();
+  }
+
+  temp1 = stack.back();
+  stack.pop_back();
+  stack.push_back((Data) {0, temp1.string.substr(0, temp1.string.size() - 1), 0, false});
+});
+
+setFunctionVar(scope, "reverse", [&] () {
+  if (stack.size() <= 0) {
+    stack.push_back(Data());
+    stack.back().type = 0;
+    stack.back().string = "can't run reverse because the stack is empty";
+    getVar(scope, "panic").data.function();
+  } else if (stack.back().type != 0) {
+    stack.push_back(Data());
+    stack.back().type = 0;
+    stack.back().string = "can't run reverse because the argument is not a string";
+    getVar(scope, "panic").data.function();
+  }
+
+  std::reverse(stack.back().string.begin(), stack.back().string.end());
+});
+
 setFunctionVar(scope, "exit", [&] () {
   if (stack.size() <= 0) {
     stack.push_back(Data());

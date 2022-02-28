@@ -1,0 +1,53 @@
+char_at {
+  `std`
+
+  @ index
+  @ string
+
+  index . is_num! F . == ? {
+    @_ @_
+    "can't run char_at because the first argument is not a number" . panic!
+  } @_ @_
+
+  string . is_str! F . == ? {
+    @_ @_
+    "can't run char_at because the second argument is not a string" . panic!
+  } @_ @_
+
+  string . length! index . 1 . + < ? {
+    @_ @_
+    "char_at failed because the index is out of range" . panic!
+  } @_ @_
+
+  index . 0 . < ? {
+    @_ @_
+    "char_at failed because the index is out of range" . panic!
+  } @_ @_
+
+  string . reverse!
+  0 . @ counter
+  & {
+    index . counter . <= ? {
+      @_
+      ^
+    } @_
+
+    str_pop!
+
+    counter . 1 . + @ counter
+  }
+
+  reverse!
+
+  length! @ counter
+  & {
+    counter . 1 . <= ? {
+      @_
+      ^
+    } @_
+
+    str_pop!
+
+    counter . 1 . - @ counter
+  }
+}
