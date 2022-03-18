@@ -16,7 +16,7 @@ https://astexplorer.net/
 - [x] Flexible spacing
 - [x] Standard library
 - [x] Errors
-  - [x] Syntax errors
+  - [x] Compiling errors
   - [x] Run time errors
 - [x] Importing files
 - [ ] Namespaces
