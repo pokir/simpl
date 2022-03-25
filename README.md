@@ -21,6 +21,14 @@ https://astexplorer.net/
 - [x] Importing files
 - [ ] Namespaces
 
+## Compiling
+
+```bash
+python3 src/main.py foo.simpl
+```
+
+This will compile to `build/foo`.
+
 ## Syntax
 
 - Comments
